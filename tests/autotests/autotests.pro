@@ -21,6 +21,15 @@ exists($$PWD/../../bin/plugins/libGnomeKeyringPasswords.so) {
     DEFINES += HAVE_GNOME_PASSWORDS_PLUGIN
 }
 
+mac {
+    # homebrew openssl
+    BREW_OPENSSL = $$system("brew --prefix openssl")
+    INCLUDEPATH += $$BREW_OPENSSL/include
+    LIBS += -L$$BREW_OPENSSL/lib
+
+    LIBS += -lcrypto -framework CoreServices
+}
+
 DESTDIR =
 OBJECTS_DIR = build
 MOC_DIR = build
