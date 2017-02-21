@@ -4,6 +4,8 @@ QT += webenginewidgets network widgets printsupport sql script dbus testlib
 
 TARGET = autotests
 
+CONFIG -= app_bundle
+
 !unix|mac: LIBS += -L$$PWD/../../bin -lQupZilla
 !mac:unix: LIBS += $$PWD/../../bin/libQupZilla.so
 
