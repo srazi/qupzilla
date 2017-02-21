@@ -23,7 +23,6 @@
 
 TabFilterDelegate::TabFilterDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
-    , m_padding(0)
 {
 }
 
