@@ -1,26 +1,52 @@
 sudo: required
 dist: trusty
 language: cpp
-cache: apt
+cache:
+  - apt
+  - brew
+
+os:
+  - linux
+  - osx
 
 env:
   - QT=qt57
-  - QT=qt58
+
 
 before_install:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+         export DISPLAY=:99.0;
+         sh -e /etc/init.d/xvfb start;
+    fi
 
 install:
-  - sudo apt-get -qq update
-  - sudo apt-get -qq install libssl-dev pkg-config libxcb-util0-dev
-  - if [[ "$QT" == "qt57" ]]; then sudo apt-add-repository -y ppa:beineri/opt-qt571-trusty; sudo apt-get update -qq; sudo apt-get install -qq qt57tools qt57script qt57webengine qt57webchannel qt57declarative qt57x11extras; fi
-  - if [[ "$QT" == "qt58" ]]; then sudo apt-add-repository -y ppa:beineri/opt-qt58-trusty; sudo apt-get update -qq; sudo apt-get install -qq qt58tools qt58script qt58webengine qt58webchannel qt58declarative qt58x11extras; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+         sudo apt-get -qq update;
+         sudo apt-get -qq install libssl-dev pkg-config libxcb-util0-dev;
+         if [[ "$QT" == "qt57" ]]; then sudo apt-add-repository -y ppa:beineri/opt-qt57-trusty; sudo apt-get update -qq; sudo apt-get install -qq ${QT}tools ${QT}script ${QT}webengine ${QT}webchannel ${QT}declarative ${QT}x11extras; fi
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+         brew update;
+         brew install openssl;
+         brew install qt5;
+    fi
 
 script:
   - QMAKE="qmake"
-  - if [[ "$QT" == "qt57" ]]; then QMAKE="/opt/qt57/bin/qmake"; fi
-  - if [[ "$QT" == "qt58" ]]; then QMAKE="/opt/qt58/bin/qmake"; fi
-  - $QMAKE QMAKE_CXXFLAGS+="-Wextra -Werror"
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+         CXXFLAGS="-Wextra -Werror";
+         QMAKE="/opt/${QT}/bin/qmake";
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+         CXXFLAGS="-Wextra -Werror -Wno-inconsistent-missing-override -Wno-deprecated-declarations";
+         QMAKE=/usr/local/opt/qt5/bin/qmake;
+    fi
+  - $QMAKE QMAKE_CXXFLAGS+="$CXXFLAGS"
   - make || exit 1
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+         ./mac/macdeploy.sh;
+         cd bin;
+         ls -l;
+         cp -v libQupZilla*.dylib tests/autotests;
+    fi
   - cd scripts && ./run_tests.sh $QMAKE
