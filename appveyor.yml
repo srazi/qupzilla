@@ -1,0 +1,85 @@
+version: 2.1.99.{build}-{branch}
+
+build:
+  parallel: true
+  verbosity: detailed
+
+configuration:
+  - release
+#  - debug
+
+branches:
+  except:
+    - v1.4
+    - v1.6
+    - v1.8
+
+environment:
+  global:
+    MAKETOOL: jom
+    TOOLSDIR: C:\Qt\Tools\QtCreator
+    PLATFORM: x86
+    OPENSSL_DIR : C:\OpenSSL-Win32
+
+  matrix:
+    - QTVER: 5.7
+      QTDIR: C:\Qt\5.7\msvc2015
+      QMAKESPEC: win32-msvc2015
+      VSVER: 14
+    - PLATFORM: x64
+      QTVER: 5.7
+      QTDIR: C:\Qt\5.7\msvc2015_64
+      QMAKESPEC: win32-msvc2015
+      VSVER: 14
+      OPENSSL_DIR : C:\OpenSSL-Win64
+
+install:
+  - call "C:\Program Files (x86)\Microsoft Visual Studio "%VSVER%".0\VC\vcvarsall.bat" %PLATFORM%
+  - set PATH=%QTDIR%\bin;%TOOLSDIR%\bin;%OPENSSL_DIR%\bin;%CD%\bin;%PATH%
+  - set BUILD_ID="%APPVEYOR_BUILD_VERSION%_qt%QTVER%_%QMAKESPEC%_%CONFIGURATION%_%PLATFORM%"
+
+build_script:
+  - echo "QupZilla BUILD %BUILD_ID%"
+  - set
+  - dir C:\Qt
+  - qmake -v
+  - qmake CONFIG+=%CONFIGURATION% INCLUDEPATH+="%OPENSSL_DIR%\include" LIBS+=-L%OPENSSL_DIR%\lib QupZilla.pro
+  - call %MAKETOOL%
+  - 7z a QupZilla_%BUILD_ID%_bin.zip bin
+
+test_script:
+  - cd tests/autotests
+  - qmake CONFIG+=%CONFIGURATION% INCLUDEPATH+="%OPENSSL_DIR%\include" LIBS+=-L%OPENSSL_DIR%\lib
+  - call %MAKETOOL%
+  - call %CONFIGURATION%\autotests.exe
+
+
+artifacts:
+   - path: QupZilla*.zip
+     name: Archived bin directory (%PLATFORM%)
+   - path: bin\*.exe
+     name: QupZilla Executable (%PLATFORM%)
+   - path: bin\*.dll
+     name: QupZilla DLL (%PLATFORM%)
+
+# deploy:
+    # release: QupZilla-v$(appveyor_build_version)
+    # description: 'AppVeyor Builds'
+    # provider: GitHub
+    # auth_token:
+      # secure:                               # your encrypted token from GitHub
+    # artifact: /QupZilla.*\.zip/             # Archived bin directory
+    # draft: false
+    # prerelease: false
+    # # on:
+      # # branch: master                      # release from master branch only
+      # # appveyor_repo_tag: true             # deploy on tag push only
+
+# notifications:
+  # - provider: Email
+    # to:
+      # - email 1
+      # - email 2
+    # on_build_success: false
+    # on_build_failure: false
+    # on_build_status_changed: true
