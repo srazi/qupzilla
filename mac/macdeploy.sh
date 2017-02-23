@@ -10,6 +10,7 @@ LIBRARY_NAME="libQupZilla.2.dylib"
 PLUGINS="QupZilla.app/Contents/Resources/plugins"
 QTPLUGINS="QupZilla.app/Contents/PlugIns"
 REDISTRIBUTE="ASK"
+REDISTRIBUTE_QUESTION = "Do you wish to redistribute known, missing, Qt Library plugins (y/n)? "
 
 if [ -n "$1" ]; then
  MACDEPLOYQT=$1
@@ -40,18 +41,20 @@ do
 done
 
 if [[ "$REDISTRIBUTE" == "QT" ]]; then
+  echo "$REDISTRIBUTE_QUESTION Yes"
   answer = "y"
 else if [[ "$REDISTRIBUTE" == "NOQT" ]]; then
+  echo "$REDISTRIBUTE_QUESTION No"
   answer = "n"
 else
   # prompt and optionally copy additional Qt native plugin(s) into bundle
-  echo -n "Do you wish to redistribute known, missing, Qt Library plugins (y/n)? "
+  echo -n $REDISTRIBUTE_QUESTION
   old_stty_cfg=$(stty -g)
   stty raw -echo
   answer=$( while ! head -c 1 | grep -i '[yn]'; do true; done )
   stty $old_stty_cfg
 fi
-
+echo "answer$answer"
 if echo "$answer" | grep -iq "^y"; then
   if [ -z ${QTDIR+x} ]; then
     printf '\nPlease set the environment variable for the Qt platform folder.\n\texample:\n\t$ export QTDIR="$HOME/Qt/5.7/clang_64"\n'
@@ -81,4 +84,6 @@ $MACDEPLOYQT QupZilla.app
 
 # create final dmg image
 cd ../mac
+ls -l
+echo "Create DMG..."
 ./create_dmg.sh
