@@ -49,7 +49,7 @@ script:
   - $QMAKE QMAKE_CXXFLAGS+="$CXXFLAGS"
   - make || exit 1
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-         ./mac/macdeploy.sh macdeployqt QT;
+         ./mac/macdeploy.sh "macdeployqt" "QT";
          ls -l bin;
          cp -v bin/libQupZilla*.dylib tests/autotests;
     fi

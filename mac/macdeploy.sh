@@ -42,11 +42,11 @@ done
 
 if [[ "$REDISTRIBUTE" == "QT" ]]; then
   echo "$REDISTRIBUTE_QUESTION Yes"
-  answer = "y"
+  answer="y"
 else
    if [[ "$REDISTRIBUTE" == "NOQT" ]]; then
      echo "$REDISTRIBUTE_QUESTION No"
-     answer = "n"
+     answer="n"
    else
      # prompt and optionally copy additional Qt native plugin(s) into bundle
      echo -n $REDISTRIBUTE_QUESTION
