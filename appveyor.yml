@@ -61,6 +61,7 @@ test_script:
   - call %MAKETOOL%
   - call %CONFIGURATION%\autotests.exe
 
+
 after_build:
   # prepare dependencies
   - echo [Paths] > %QZ_BIN_DIR%\qt.conf && echo Plugins="." >> %QZ_BIN_DIR%\qt.conf
@@ -84,9 +85,9 @@ after_build:
   - copy ..\*.ico .\
   - copy ..\*.bmp .\
   # prepare nsis plugins
-  - 7zip x "..\dependencies\KillProcDll&FindProcDll.zip"
-  - 7zip x ..\dependencies\Registry.zip
-  - 7zip x ..\dependencies\AppAssocReg-0.4.zip
+  - 7z x "..\dependencies\KillProcDll&FindProcDll.zip"
+  - 7z x ..\dependencies\Registry.zip
+  - 7z x ..\dependencies\AppAssocReg-0.4.zip
   - copy Registry\Desktop\Plugin\*.dll .\
   - copy AppAssocReg-0.4\Plugins\*.dll .\
   # prepare hunspell 
@@ -96,11 +97,11 @@ after_build:
   - 7z x master.tar
   - mkdir doc
   - set master_dir=.
-  - mv %master_dir%/README* doc/
-  - mv %master_dir%/COPYING* doc/
-  - mv %master_dir%/LICENSE* doc/
-  - mv %master_dir%/*.aff ./
-  - mv %master_dir%/*.doc ./
+  - move %master_dir%/README* doc/
+  - move %master_dir%/COPYING* doc/
+  - move %master_dir%/LICENSE* doc/
+  - move %master_dir%/*.aff ./
+  - move %master_dir%/*.doc ./
   # change directory to windows
   - cd ../..
   # set paths
