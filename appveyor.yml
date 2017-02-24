@@ -1,5 +1,8 @@
 version: 2.1.99.{build}-{branch}
 
+cache:
+  - windows/dependencies
+
 build:
   parallel: true
   verbosity: detailed
@@ -62,7 +65,7 @@ after_build:
   - mkdir dependencies
   - cd dependencies
   - IF NOT EXIST "KillProcDll&FindProcDll.zip" (
-        appveyor DownloadFile http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip
+        appveyor DownloadFile http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll&FindProcDll.zip
     ) else (
         echo "Use cache KillProcDll"
     )
