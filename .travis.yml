@@ -43,13 +43,19 @@ script:
          if [[ "$QT" == "qt57" ]]; then QMAKE="/opt/qt57/bin/qmake"; fi
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+         MACDEPLOYQT="macdeployqt"
          CXXFLAGS="-Wextra -Werror -Wno-inconsistent-missing-override -Wno-deprecated-declarations";
-         if [[ "$QT" == "qt57" ]]; then QMAKE=/usr/local/opt/qt5/bin/qmake; fi
+         if [[ "$QT" == "qt57" ]]; then
+              export QTDIR=/usr/local/opt/qt5
+              MACDEPLOYQT=/usr/local/opt/qt5/bin/macdeployqt
+              QMAKE=/usr/local/opt/qt5/bin/qmake;
+         fi
     fi
   - $QMAKE QMAKE_CXXFLAGS+="$CXXFLAGS"
   - make || exit 1
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-         ./mac/macdeploy.sh "macdeployqt" "QT";
+         echo "MACDEPLOYQT= $MACDEPLOYQT"
+         ./mac/macdeploy.sh $MACDEPLOYQT QT;
          ls -l bin;
          cp -v bin/libQupZilla*.dylib tests/autotests;
     fi
