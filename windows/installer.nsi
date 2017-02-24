@@ -19,6 +19,18 @@ RequestExecutionLevel admin
 
 !addplugindir "wininstall\"
 
+!ifndef CUSTOM_PATH
+  !define MSVC_VER 120
+  !define OPENSSL_BIN_DIR .
+  !define MSVC_REDIST_DIR .
+  !define QZ_BIN_DIR .
+  !define QT_CREATOR_BIN_DIR .
+  !define QT_DIR .
+  !define QT_BIN_DIR .
+  !define QT_PLUGINS_DIR .
+  !define HUNSPELL_DIR wininstall\hunspell
+!endif
+
 !include "FileFunc.nsh"
 !include "wininstall\AllAssociation.nsh"
 SetCompressor /SOLID /FINAL lzma
@@ -61,7 +73,7 @@ SetCompressor /SOLID /FINAL lzma
 !insertmacro MUI_LANGUAGE "French"
 !insertmacro MUI_LANGUAGE "Italian"
 !insertmacro MUI_LANGUAGE "Romanian"
-!insertmacro MUI_LANGUAGE "Hongkongese"
+/* !insertmacro MUI_LANGUAGE "Hongkongese" */
 !insertmacro MUI_LANGUAGE "Tradchinese"
 !insertmacro MUI_LANGUAGE "Simpchinese"
 !insertmacro MUI_LANGUAGE "Indonesian"
@@ -92,7 +104,7 @@ ShowUnInstDetails show
 
 Section !$(TITLE_SecMain) SecMain
   SectionIn RO
-  FindProcDLL::FindProc "qupzilla.exe"
+  FindProcDLL::FindProc "${QZ_BIN_DIR}\\qupzilla.exe"
   IntCmp $R0 1 0 notRunning
   MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION "$(MSG_RunningInstance)" /SD IDOK IDCANCEL AbortInstallation
     KillProcDLL::KillProc "qupzilla.exe"
@@ -106,72 +118,72 @@ notRunning:
 
   SetOutPath "$INSTDIR"
   File "COPYRIGHT.txt"
-  File "qupzilla.exe"
-  File "qupzilla.dll"
-  File "libeay32.dll"
-  File "ssleay32.dll"
-  File "Microsoft.VC120.CRT.manifest"
-  File "qt.conf"
-  File "msvcp120.dll"
-  File "msvcr120.dll"
-  File "vccorlib120.dll"
-  File "icudt54.dll"
-  File "icuin54.dll"
-  File "icuuc54.dll"
-  File "libEGL.dll"
-  File "libGLESv2.dll"
-  File "opengl32sw.dll"
-  File "D3Dcompiler_47.dll"
-  File "Qt5Core.dll"
-  File "Qt5Gui.dll"
-  File "Qt5Network.dll"
-  File "Qt5Positioning.dll"
-  File "Qt5PrintSupport.dll"
-  File "Qt5Qml.dll"
-  File "Qt5Quick.dll"
-  File "Qt5QuickWidgets.dll"
-  File "Qt5Sql.dll"
-  File "Qt5Svg.dll"
-  File "Qt5WebEngine.dll"
-  File "Qt5WebEngineCore.dll"
-  File "Qt5WebEngineWidgets.dll"
-  File "Qt5WebChannel.dll"
-  File "Qt5Widgets.dll"
-  File "QtWebEngineProcess.exe"
+  File "${QZ_BIN_DIR}\qupzilla.exe"
+  File "${QZ_BIN_DIR}\qupzilla.dll"
+  File "${QZ_BIN_DIR}\qt.conf"
+  File "${OPENSSL_BIN_DIR}\libeay32.dll"
+  File "${OPENSSL_BIN_DIR}\ssleay32.dll"
+  File /nonfatal "${MSVC_REDIST_DIR}\Microsoft.VC${MSVC_VER}.CRT.manifest"
+  File "${MSVC_REDIST_DIR}\msvcp${MSVC_VER}.dll"
+  File "${MSVC_REDIST_DIR}\msvcr${MSVC_VER}.dll"
+  File "${MSVC_REDIST_DIR}\vccorlib${MSVC_VER}.dll"
+  File "${QT_CREATOR_BIN_DIR}\icudt54.dll"
+  File "${QT_CREATOR_BIN_DIR}\icuin54.dll"
+  File "${QT_CREATOR_BIN_DIR}\icuuc54.dll"
+  File "${QT_BIN_DIR}\libEGL.dll"
+  File "${QT_BIN_DIR}\libGLESv2.dll"
+  File "${QT_BIN_DIR}\opengl32sw.dll"
+  File "${QT_BIN_DIR}\D3Dcompiler_47.dll"
+  File "${QT_BIN_DIR}\Qt5Core.dll"
+  File "${QT_BIN_DIR}\Qt5Gui.dll"
+  File "${QT_BIN_DIR}\Qt5Network.dll"
+  File "${QT_BIN_DIR}\Qt5Positioning.dll"
+  File "${QT_BIN_DIR}\Qt5PrintSupport.dll"
+  File "${QT_BIN_DIR}\Qt5Qml.dll"
+  File "${QT_BIN_DIR}\Qt5Quick.dll"
+  File "${QT_BIN_DIR}\Qt5QuickWidgets.dll"
+  File "${QT_BIN_DIR}\Qt5Sql.dll"
+  File "${QT_BIN_DIR}\Qt5Svg.dll"
+  File "${QT_BIN_DIR}\Qt5WebEngine.dll"
+  File "${QT_BIN_DIR}\Qt5WebEngineCore.dll"
+  File "${QT_BIN_DIR}\Qt5WebEngineWidgets.dll"
+  File "${QT_BIN_DIR}\Qt5WebChannel.dll"
+  File "${QT_BIN_DIR}\Qt5Widgets.dll"
+  File "${QT_BIN_DIR}\QtWebEngineProcess.exe"
 
   SetOutPath "$INSTDIR\iconengines"
-  File "iconengines\qsvgicon.dll"
+  File "${QT_PLUGINS_DIR}\iconengines\qsvgicon.dll"
 
   SetOutPath "$INSTDIR\imageformats"
-  File "imageformats\*.dll"
+  File "${QT_PLUGINS_DIR}\imageformats\*.dll"
 
   SetOutPath "$INSTDIR\platforms"
-  File "platforms\qwindows.dll"
+  File "${QT_PLUGINS_DIR}\platforms\qwindows.dll"
 
   SetOutPath "$INSTDIR\printsupport"
-  File "printsupport\windowsprintersupport.dll"
+  File "${QT_PLUGINS_DIR}\printsupport\windowsprintersupport.dll"
 
   SetOutPath "$INSTDIR\qml\QtQuick.2"
-  File "qml\QtQuick.2\*"
+  File "${QT_DIR}\qml\QtQuick.2\*"
 
   SetOutPath "$INSTDIR\qml\QtWebEngine"
-  File "qml\QtWebEngine\*"
+  File "${QT_DIR}\qml\QtWebEngine\*"
 
   SetOutPath "$INSTDIR\resources"
-  File "resources\*"
+  File "${QT_DIR}\resources\*"
 
   SetOutPath "$INSTDIR\sqldrivers"
-  File "sqldrivers\qsqlite.dll"
+  File "${QT_PLUGINS_DIR}\sqldrivers\qsqlite.dll"
 
   SetOutPath "$INSTDIR\translations\qtwebengine_locales"
-  File "translations\qtwebengine_locales\*"
+  File "${QT_DIR}\translations\qtwebengine_locales\*"
 
   SetOutPath "$INSTDIR\hunspell\doc"
-  File "wininstall\hunspell\doc\*"
+  File "${HUNSPELL_DIR}\doc\*"
 
   SetOutPath "$INSTDIR\hunspell"
-  File "wininstall\hunspell\en_US.aff"
-  File "wininstall\hunspell\en_US.dic"
+  File "${HUNSPELL_DIR}\en_US.aff"
+  File "${HUNSPELL_DIR}\en_US.dic"
 
   call RegisterCapabilities
 SectionEnd
@@ -181,52 +193,52 @@ SectionGroup $(TITLE_SecThemes) SecThemes
   Section Default SecDefault
   SectionIn RO
   SetOutPath "$INSTDIR\themes\windows"
-  File "themes\windows\*"
+  File "${QZ_BIN_DIR}\themes\windows\*"
   SetOutPath "$INSTDIR\themes\windows\images"
-  File "themes\windows\images\*"
+  File "${QZ_BIN_DIR}\themes\windows\images\*"
   SectionEnd
 
   Section Chrome SecChrome
   SetOutPath "$INSTDIR\themes\chrome"
-  File "themes\chrome\*"
+  File "${QZ_BIN_DIR}\themes\chrome\*"
   SetOutPath "$INSTDIR\themes\chrome\images"
-  File "themes\chrome\images\*"
+  File "${QZ_BIN_DIR}\themes\chrome\images\*"
   SectionEnd
 
   Section Mac SecMac
   SetOutPath "$INSTDIR\themes\mac"
-  File "themes\mac\*"
+  File "${QZ_BIN_DIR}\themes\mac\*"
   SetOutPath "$INSTDIR\themes\mac\images"
-  File "themes\mac\images\*"
+  File "${QZ_BIN_DIR}\themes\mac\images\*"
   SectionEnd
 
   Section Breathe SecBreathe
   SetOutPath "$INSTDIR\themes\breathe"
-  File "themes\breathe\*"
+  File "${QZ_BIN_DIR}\themes\breathe\*"
   SetOutPath "$INSTDIR\themes\breathe\images"
-  File "themes\breathe\images\*"
+  File "${QZ_BIN_DIR}\themes\breathe\images\*"
   SectionEnd
 
-  Section Old SecOld
-  SetOutPath "$INSTDIR\themes\default"
-  File "themes\default\*"
-  SetOutPath "$INSTDIR\themes\default\images"
-  File "themes\default\images\*"
+  Section Linux SecOld
+  SetOutPath "$INSTDIR\themes\linux"
+  File "${QZ_BIN_DIR}\themes\linux\*"
+  SetOutPath "$INSTDIR\themes\linux\images"
+  File "${QZ_BIN_DIR}\themes\linux\images\*"
   SectionEnd
 
 SectionGroupEnd
 
 Section $(TITLE_SecTranslations) SecTranslations
   SetOutPath "$INSTDIR\locale"
-  File "locale\*.qm"
+  File "${QZ_BIN_DIR}\locale\*.qm"
   SetOutPath "$INSTDIR\hunspell"
-  File "wininstall\hunspell\*.aff"
-  File "wininstall\hunspell\*.dic"
+  File "${HUNSPELL_DIR}\*.aff"
+  File "${HUNSPELL_DIR}\*.dic"
 SectionEnd
 
 Section $(TITLE_SecPlugins) SecPlugins
   SetOutPath "$INSTDIR\plugins"
-  File "plugins\*.dll"
+  File "${QZ_BIN_DIR}\plugins\*.dll"
 SectionEnd
 
 SectionGroup $(TITLE_SecSetASDefault) SecSetASDefault
