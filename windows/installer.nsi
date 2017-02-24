@@ -50,7 +50,7 @@ SetCompressor /SOLID /FINAL lzma
 !define MUI_UNWELCOMEFINISHPAGE_BITMAP "wininstall\welcome.bmp"
 
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE COPYRIGHT.txt
+!insertmacro MUI_PAGE_LICENSE ${QZ_BIN_DIR}\COPYRIGHT.txt
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
@@ -73,7 +73,6 @@ SetCompressor /SOLID /FINAL lzma
 !insertmacro MUI_LANGUAGE "French"
 !insertmacro MUI_LANGUAGE "Italian"
 !insertmacro MUI_LANGUAGE "Romanian"
-/* !insertmacro MUI_LANGUAGE "Hongkongese" */
 !insertmacro MUI_LANGUAGE "Tradchinese"
 !insertmacro MUI_LANGUAGE "Simpchinese"
 !insertmacro MUI_LANGUAGE "Indonesian"
@@ -104,7 +103,7 @@ ShowUnInstDetails show
 
 Section !$(TITLE_SecMain) SecMain
   SectionIn RO
-  FindProcDLL::FindProc "${QZ_BIN_DIR}\\qupzilla.exe"
+  FindProcDLL::FindProc "${QZ_BIN_DIR}\qupzilla.exe"
   IntCmp $R0 1 0 notRunning
   MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION "$(MSG_RunningInstance)" /SD IDOK IDCANCEL AbortInstallation
     KillProcDLL::KillProc "qupzilla.exe"
@@ -117,16 +116,13 @@ notRunning:
   SetOverwrite on
 
   SetOutPath "$INSTDIR"
-  File "COPYRIGHT.txt"
+  File "${QZ_BIN_DIR}\COPYRIGHT.txt"
   File "${QZ_BIN_DIR}\qupzilla.exe"
   File "${QZ_BIN_DIR}\qupzilla.dll"
   File "${QZ_BIN_DIR}\qt.conf"
   File "${OPENSSL_BIN_DIR}\libeay32.dll"
   File "${OPENSSL_BIN_DIR}\ssleay32.dll"
-  File /nonfatal "${MSVC_REDIST_DIR}\Microsoft.VC${MSVC_VER}.CRT.manifest"
-  File "${MSVC_REDIST_DIR}\msvcp${MSVC_VER}.dll"
-  File "${MSVC_REDIST_DIR}\msvcr${MSVC_VER}.dll"
-  File "${MSVC_REDIST_DIR}\vccorlib${MSVC_VER}.dll"
+  File "${MSVC_REDIST_DIR}\*"
   File "${QT_CREATOR_BIN_DIR}\icudt54.dll"
   File "${QT_CREATOR_BIN_DIR}\icuin54.dll"
   File "${QT_CREATOR_BIN_DIR}\icuuc54.dll"
