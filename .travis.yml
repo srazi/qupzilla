@@ -37,26 +37,43 @@ install:
     fi
 
 script:
+  - export QZ_DIR=$PWD
   - QMAKE="qmake"
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
          CXXFLAGS="-Wextra -Werror";
          if [[ "$QT" == "qt57" ]]; then QMAKE="/opt/qt57/bin/qmake"; fi
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-         MACDEPLOYQT="macdeployqt"
+         MACDEPLOYQT="macdeployqt";
          CXXFLAGS="-Wextra -Werror -Wno-inconsistent-missing-override -Wno-deprecated-declarations";
          if [[ "$QT" == "qt57" ]]; then
-              export QTDIR=/usr/local/opt/qt5
-              MACDEPLOYQT=/usr/local/opt/qt5/bin/macdeployqt
+              export QTDIR=/usr/local/opt/qt5;
+              MACDEPLOYQT=/usr/local/opt/qt5/bin/macdeployqt;
               QMAKE=/usr/local/opt/qt5/bin/qmake;
          fi
     fi
   - $QMAKE QMAKE_CXXFLAGS+="$CXXFLAGS"
   - make || exit 1
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-         echo "MACDEPLOYQT= $MACDEPLOYQT";
-         ./mac/macdeploy.sh $MACDEPLOYQT QT;
-         ls -l bin;
          cp -v bin/libQupZilla*.dylib tests/autotests;
     fi
   - cd scripts && ./run_tests.sh $QMAKE
+
+before_deploy:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+         echo $PWD;
+         cd $QZ_DIR;
+         echo $PWD;
+         echo "MACDEPLOYQT= $MACDEPLOYQT";
+         ./mac/macdeploy.sh $MACDEPLOYQT QT;
+         ls -l bin;
+    fi
+
+deploy:
+  provider: releases
+  api_key:
+    secure: "vG3PnIRC0n0PZAwZ5zCpSj5JzrUqAwz+mcJPEZuBwnimN0XllV/NKhEUcid4WCMwTXnMy8Vxb/dB3v0xu0eSzdpE9GM7z4yNU9kitW5nPEkXl3CdCWTD16TFP70z3485D6YxngdeDu66kUzws7rUGwNB+SxoUK973gfD+89K2tIXhskow+F8h68AaES6rSEG15pWd1a1JLRNlU25N2dEsbuLG3aUBFJ5SbQMEML/cWbt5cLzmTXONwRKH0GSOL5k05lYQEUt11RGKVM/mnaYyRswEINove9EOSe2GujlnwGdgFxxg7V/xLx9CXAnwmnceqjSsO/4AwcFRuYn9CCyVzC1U68V17lKu44ImotYLlELZbs58GWz6qUVpjRw/pRBg0AX3mRu0gU9X+hkvvulUvTvVCYP204gJLPN9tchsPBFvNgr1GgjgRubCFRz9VpVdNNZcETn3q4t/RoNsfjzHL1QGjaWzKkTQ3clxLnhhRmGYZnacdcSkswRYWsOrvbonhiibqnnQWt1PuB+TebymSE/peDykwt4AHqkmgIxp0MeBF9U4XWMm0Bzy6h1BL3Ve50j37KMKP2HMVhxjbqpUkTiAX1Kr3azhNs27MjqOskaTpVCuytLG/HOPsN3Hvr67HAtOK+YkBp2gaAYyyB/KyOQnBtXGurKUd9yHmLXdic="
+  file: $QZ_DIR/bin/QupZilla.dmg
+  skip_cleanup: true
+  on:
+    tags: true
