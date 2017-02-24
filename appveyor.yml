@@ -55,35 +55,55 @@ test_script:
   - call %CONFIGURATION%\autotests.exe
 
 after_build:
-  # prepare other dependency
+  # prepare dependencies
   - echo [Paths] > %QZ_BIN_DIR%\qt.conf && echo Plugins="." >> %QZ_BIN_DIR%\qt.conf
   - copy  %QZ_BIN_DIR%\..\COPYRIGHT %QZ_BIN_DIR%\COPYRIGHT.txt
   - cd windows
-  - mkdir wininstall
-  - cd wininstall
-  - copy ..\* .\
+  - mkdir dependencies
+  - cd dependencies
+  - IF NOT EXIST "KillProcDll&FindProcDll.zip" (
+        appveyor DownloadFile http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip
+    ) else (
+        echo "Use cache KillProcDll"
+    )
+  - IF NOT EXIST "Registry.zip" (
+        appveyor DownloadFile http://nsis.sourceforge.net/mediawiki/images/4/47/Registry.zip
+    ) else (
+        echo "Use cache Registry"
+    )
+  - IF NOT EXIST "AppAssocReg-0.4.zip" (
+        appveyor DownloadFile http://nsis.sourceforge.net/mediawiki/images/d/d4/AppAssocReg-0.4.zip
+    ) else (
+        echo "Use cache AppAssocReg"
+    )
+  - IF NOT EXIST "master.tar.gz" (
+        appveyor DownloadFile https://chromium.googlesource.com/chromium/deps/hunspell_dictionaries/+archive/master.tar.gz
+    ) else (
+        echo "Use cache master"
+    )
+  - mkdir ..\wininstall
+  - cd ..\wininstall
+  - copy ..\*.nsh .\
+  - copy ..\*.ico .\
+  - copy ..\*.bmp .\
   # prepare nsis plugins
-  - rm KillProcDll&FindProcDll.zip && rm Registry.zip && rm AppAssocReg-0.4.zip
-  - appveyor DownloadFile http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip
-  - appveyor DownloadFile http://nsis.sourceforge.net/mediawiki/images/4/47/Registry.zip
-  - appveyor DownloadFile http://nsis.sourceforge.net/mediawiki/images/d/d4/AppAssocReg-0.4.zip
-  - 7zip x KillProcDll&FindProcDll.zip
-  - 7zip x Registry.zip
-  - 7zip x AppAssocReg-0.4.zip
-  - cp KillProcDll&FindProcDll\*.dll .\
-  - cp Registry\Desktop\Plugin\*.dll .\
-  - cp AppAssocReg-0.4\Plugins\*.dll .\
-  # prepare hunspell
-  - mkdir hunspell && cd hunspell
-  - appveyor DownloadFile https://chromium.googlesource.com/chromium/deps/hunspell_dictionaries/+archive/master.tar.gz
-  - 7z x master.tar.gz
+  - 7zip x "..\dependencies\KillProcDll&FindProcDll.zip"
+  - 7zip x ..\dependencies\Registry.zip
+  - 7zip x ..\dependencies\AppAssocReg-0.4.zip
+  - copy Registry\Desktop\Plugin\*.dll .\
+  - copy AppAssocReg-0.4\Plugins\*.dll .\
+  # prepare hunspell 
+  - mkdir hunspell
+  - cd hunspell
+  - 7z x ..\..\dependencies\master.tar.gz
   - 7z x master.tar
   - mkdir doc
-  - mv master/README* doc/
-  - mv master/COPYING* doc/
-  - mv master/LICENSE* doc/
-  - mv master/*.aff ./
-  - mv master/*.doc ./
+  - set master_dir=.
+  - mv %master_dir%/README* doc/
+  - mv %master_dir%/COPYING* doc/
+  - mv %master_dir%/LICENSE* doc/
+  - mv %master_dir%/*.aff ./
+  - mv %master_dir%/*.doc ./
   # change directory to windows
   - cd ../..
   # set paths
@@ -98,7 +118,7 @@ after_build:
   - dir
 
 artifacts:
-   - path: windows\QupZilla*.exe
+   - path: QupZilla*.exe
      name: QupZilla Installer (%PLATFORM%)
    - path: QupZilla*.zip
      name: Archived bin directory (%PLATFORM%)
