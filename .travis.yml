@@ -54,7 +54,7 @@ script:
   - $QMAKE QMAKE_CXXFLAGS+="$CXXFLAGS"
   - make || exit 1
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-         echo "MACDEPLOYQT= $MACDEPLOYQT"
+         echo "MACDEPLOYQT= $MACDEPLOYQT";
          ./mac/macdeploy.sh $MACDEPLOYQT QT;
          ls -l bin;
          cp -v bin/libQupZilla*.dylib tests/autotests;
