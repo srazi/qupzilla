@@ -69,27 +69,13 @@ after_build:
   - mkdir dependencies
   - cd dependencies
   - IF NOT EXIST "KillProcDll&FindProcDll.zip" (
-        # #appveyor DownloadFile 
-        - curl -fsS -o "KillProcDll&FindProcDll.zip" http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll&FindProcDll.zip
-        - dir
-    ) else (
-        echo "Use cache KillProcDll"
-    )
+        curl -fsS -o "KillProcDll&FindProcDll.zip" http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll&FindProcDll.zip && dir) else ( echo "Use cache KillProcDll")
   - IF NOT EXIST "Registry.zip" (
-        appveyor DownloadFile http://nsis.sourceforge.net/mediawiki/images/4/47/Registry.zip
-    ) else (
-        echo "Use cache Registry"
-    )
+        appveyor DownloadFile http://nsis.sourceforge.net/mediawiki/images/4/47/Registry.zip ) else (echo "Use cache Registry")
   - IF NOT EXIST "AppAssocReg-0.4.zip" (
-        appveyor DownloadFile http://nsis.sourceforge.net/mediawiki/images/d/d4/AppAssocReg-0.4.zip
-    ) else (
-        echo "Use cache AppAssocReg"
-    )
+        appveyor DownloadFile http://nsis.sourceforge.net/mediawiki/images/d/d4/AppAssocReg-0.4.zip ) else (echo "Use cache Registry")
   - IF NOT EXIST "master.tar.gz" (
-        appveyor DownloadFile https://chromium.googlesource.com/chromium/deps/hunspell_dictionaries/+archive/master.tar.gz
-    ) else (
-        echo "Use cache master"
-    )
+        appveyor DownloadFile https://chromium.googlesource.com/chromium/deps/hunspell_dictionaries/+archive/master.tar.gz ) else (echo "Use cache Registry")
   - mkdir ..\wininstall
   - cd ..\wininstall
   - copy ..\*.nsh .\
