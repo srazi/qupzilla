@@ -42,6 +42,9 @@ install:
   - set BUILD_ID="%APPVEYOR_BUILD_VERSION%_qt%QTVER%_%QMAKESPEC%_%CONFIGURATION%_%PLATFORM%"
 
 build_script:
+  - dir /s "C:\Program Files (x86)\NSIS"
+  - exit(1)
+  - pause
   - echo "QupZilla BUILD %BUILD_ID%"
   - set
   - set QZ_BIN_DIR=%CD%\bin
