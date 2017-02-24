@@ -41,6 +41,7 @@ install:
 build_script:
   - echo "QupZilla BUILD %BUILD_ID%"
   - set
+  - set QZ_BIN_DIR=%CD%\bin
   - dir C:\Qt
   - qmake -v
   - qmake CONFIG+=%CONFIGURATION% INCLUDEPATH+="%OPENSSL_DIR%\include" LIBS+=-L%OPENSSL_DIR%\lib QupZilla.pro
@@ -53,8 +54,52 @@ test_script:
   - call %MAKETOOL%
   - call %CONFIGURATION%\autotests.exe
 
+after_build:
+  # prepare other dependency
+  - echo [Paths] > %QZ_BIN_DIR%\qt.conf && echo Plugins="." >> %QZ_BIN_DIR%\qt.conf
+  - copy  %QZ_BIN_DIR%\..\COPYRIGHT %QZ_BIN_DIR%\COPYRIGHT.txt
+  - cd windows
+  - mkdir wininstall
+  - cd wininstall
+  - copy ..\* .\
+  # prepare nsis plugins
+  - rm KillProcDll&FindProcDll.zip && rm Registry.zip && rm AppAssocReg-0.4.zip
+  - appveyor DownloadFile http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip
+  - appveyor DownloadFile http://nsis.sourceforge.net/mediawiki/images/4/47/Registry.zip
+  - appveyor DownloadFile http://nsis.sourceforge.net/mediawiki/images/d/d4/AppAssocReg-0.4.zip
+  - 7zip x KillProcDll&FindProcDll.zip
+  - 7zip x Registry.zip
+  - 7zip x AppAssocReg-0.4.zip
+  - cp KillProcDll&FindProcDll\*.dll .\
+  - cp Registry\Desktop\Plugin\*.dll .\
+  - cp AppAssocReg-0.4\Plugins\*.dll .\
+  # prepare hunspell
+  - mkdir hunspell && cd hunspell
+  - appveyor DownloadFile https://chromium.googlesource.com/chromium/deps/hunspell_dictionaries/+archive/master.tar.gz
+  - 7z x master.tar.gz
+  - 7z x master.tar
+  - mkdir doc
+  - mv master/README* doc/
+  - mv master/COPYING* doc/
+  - mv master/LICENSE* doc/
+  - mv master/*.aff ./
+  - mv master/*.doc ./
+  # change directory to windows
+  - cd ../..
+  # set paths
+  - set OPENSSL_BIN_DIR="%OPENSSL_DIR%\bin"
+  - set MSVC_REDIST_DIR="C:\Program Files (x86)\Microsoft Visual Studio "%VSVER%".0\VC\redist\%PLATFORM%\Microsoft.VC%VSVER%0.CRT"
+  - set QT_CREATOR_BIN_DIR="%TOOLSDIR%\bin"
+  - set QT_BIN_DIR="%QTDIR%\bin"
+  - set QT_PLUGINS_DIR="%QTDIR%\plugins"
+  - set HUNSPELL_DIR="%QZ_BIN_DIR%\windows\wininstall\hunspell"
+  # make installer
+  - call "C:\Program Files (x86)\NSIS\makensis.exe" /DCUSTOM_PATH=1 /DMSVC_VER=%VSVER%0 /DOPENSSL_BIN_DIR=%OPENSSL_BIN_DIR% /DMSVC_REDIST_DIR=%MSVC_REDIST_DIR% /DQZ_BIN_DIR=%QZ_BIN_DIR% /DQT_CREATOR_BIN_DIR=%QT_CREATOR_BIN_DIR% /DQT_DIR=%QTDIR% /DQT_BIN_DIR=%QTDIR%\bin /DQT_PLUGINS_DIR=%QTDIR%\plugins" /DHUNSPELL_DIR=%HUNSPELL_DIR% installer.nsi
+  - dir
 
 artifacts:
+   - path: windows\QupZilla*.exe
+     name: QupZilla Installer (%PLATFORM%)
    - path: QupZilla*.zip
      name: Archived bin directory (%PLATFORM%)
    - path: bin\*.exe
