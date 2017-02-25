@@ -1,4 +1,4 @@
-version: {build}-{branch}
+version: 2.1.99.{build}-{branch}
 
 cache:
   - windows/dependencies
@@ -19,6 +19,7 @@ branches:
 
 environment:
   global:
+    VERSION: 2.1.99
     MAKETOOL: jom
     TOOLSDIR: C:\Qt\Tools\QtCreator
     PLATFORM: x86
@@ -35,7 +36,6 @@ environment:
       VSVER: 14
 
 install:
-  - set VERSION=2.1.99
   - set CPU_ARCH=32
   - IF "%PLATFORM%" == "x64" (set CPU_ARCH=64)
   - set OPENSSL_DIR="C:\OpenSSL-Win%CPU_ARCH%"
@@ -43,7 +43,7 @@ install:
   - set ICU_DOWNLOAD_URL="http://download.icu-project.org/files/icu4c/54.1/%ICU_DIR_NAME%.zip"
   - call "C:\Program Files (x86)\Microsoft Visual Studio "%VSVER%".0\VC\vcvarsall.bat" %PLATFORM%
   - set PATH=%QTDIR%\bin;%TOOLSDIR%\bin;%OPENSSL_DIR%\bin;%CD%\bin;%PATH%
-  - set BUILD_ID="%VERSION%.%APPVEYOR_BUILD_VERSION%_qt%QTVER%_%QMAKESPEC%_%CONFIGURATION%_%PLATFORM%"
+  - set BUILD_ID="%APPVEYOR_BUILD_VERSION%_qt%QTVER%_%QMAKESPEC%_%CONFIGURATION%_%PLATFORM%"
 
 build_script:
   # - dir %QTDIR%\bin\*.dll
