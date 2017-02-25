@@ -66,13 +66,14 @@ after_build:
   - mkdir dependencies
   - cd dependencies
   - IF NOT EXIST "KillProcDllFindProcDll.zip" (
-        appveyor DownloadFile "appveyor DownloadFile "https://github.com/srazi/qupzilla/raw/NSIS-Plugins-for-installer/windows/dependencies/KillProcDllFindProcDll.zip" && dir) else ( echo "Use cache KillProcDll")
+        appveyor DownloadFile "appveyor DownloadFile "http://github.com/srazi/qupzilla/raw/NSIS-Plugins-for-installer/windows/dependencies/KillProcDllFindProcDll.zip" ) else ( echo "Use cache KillProcDll")
   - IF NOT EXIST "Registry.zip" (
         appveyor DownloadFile http://nsis.sourceforge.net/mediawiki/images/4/47/Registry.zip ) else (echo "Use cache Registry")
   - IF NOT EXIST "AppAssocReg-0.4.zip" (
         appveyor DownloadFile http://nsis.sourceforge.net/mediawiki/images/d/d4/AppAssocReg-0.4.zip ) else (echo "Use cache Registry")
   - IF NOT EXIST "master.tar.gz" (
         appveyor DownloadFile http://chromium.googlesource.com/chromium/deps/hunspell_dictionaries/+archive/master.tar.gz ) else (echo "Use cache Registry")
+  - dir
   - mkdir ..\wininstall
   - cd ..\wininstall
   - copy ..\*.nsh .\
