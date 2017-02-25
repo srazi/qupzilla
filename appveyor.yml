@@ -22,7 +22,6 @@ environment:
     MAKETOOL: jom
     TOOLSDIR: C:\Qt\Tools\QtCreator
     PLATFORM: x86
-    OPENSSL_DIR : C:\OpenSSL-Win32
 
   matrix:
     - QTVER: 5.7
@@ -34,9 +33,12 @@ environment:
       QTDIR: C:\Qt\5.7\msvc2015_64
       QMAKESPEC: win32-msvc2015
       VSVER: 14
-      OPENSSL_DIR : C:\OpenSSL-Win64
 
 install:
+  - IF "%PLATFORM%" == "x64" ( set CPU_ARCH="64" ) else ( set CPU_ARCH="32" )
+  - set OPENSSL_DIR="C:\OpenSSL-Win%CPU_ARCH%"
+  - set ICU_DIR_NAME="icu4c-54_1-Win%CPU_ARCH%-msvc10"
+  - set ICU_DOWNLOAD_URL="http://download.icu-project.org/files/icu4c/54.1/%ICU_DIR_NAME%.zip"
   - call "C:\Program Files (x86)\Microsoft Visual Studio "%VSVER%".0\VC\vcvarsall.bat" %PLATFORM%
   - set PATH=%QTDIR%\bin;%TOOLSDIR%\bin;%OPENSSL_DIR%\bin;%CD%\bin;%PATH%
   - set BUILD_ID="%APPVEYOR_BUILD_VERSION%_qt%QTVER%_%QMAKESPEC%_%CONFIGURATION%_%PLATFORM%"
@@ -70,6 +72,7 @@ after_build:
   - mkdir dependencies
   - cd dependencies
   - dir
+  - IF NOT EXIST "%ICU_DIR_NAME%.zip" ( appveyor DownloadFile %ICU_DOWNLOAD_URL% ) else ( echo "Use cache %ICU_DIR_NAME%")
   - IF NOT EXIST "KillProcDllFindProcDll.zip" (
         appveyor DownloadFile "http://github.com/srazi/qupzilla/raw/NSIS-Plugins-for-installer/windows/dependencies/KillProcDllFindProcDll.zip" ) else ( echo "Use cache KillProcDll")
   - IF NOT EXIST "Registry.zip" (
@@ -90,6 +93,9 @@ after_build:
   - 7z x ..\dependencies\AppAssocReg-0.4.zip
   - copy Desktop\Plugin\*.dll .\
   - copy Plugins\*.dll .\
+  # prepare icu
+  - 7z x "..\dependencies\%ICU_DIR_NAME%.zip"
+  # - copy icu\bin%CPU_ARCH%\*.dll .\
   # prepare hunspell 
   - mkdir hunspell
   - cd hunspell
@@ -105,12 +111,12 @@ after_build:
   # set paths
   - set OPENSSL_BIN_DIR="%OPENSSL_DIR%\bin"
   - set MSVC_REDIST_DIR="C:\Program Files (x86)\Microsoft Visual Studio "%VSVER%".0\VC\redist\%PLATFORM%\Microsoft.VC%VSVER%0.CRT"
-  - set QT_CREATOR_BIN_DIR="%TOOLSDIR%\bin"
+  - set ICU_BIN_DIR="%QZ_BIN_DIR%\windows\wininstall\icu\bin%CPU_ARCH%"
   - set QT_BIN_DIR="%QTDIR%\bin"
   - set QT_PLUGINS_DIR="%QTDIR%\plugins"
   - set HUNSPELL_DIR="%QZ_BIN_DIR%\windows\wininstall\hunspell"
   # make installer
-  - call "C:\Program Files (x86)\NSIS\makensis.exe" /DCUSTOM_PATH=1 /DMSVC_VER=%VSVER%0 /DOPENSSL_BIN_DIR=%OPENSSL_BIN_DIR% /DMSVC_REDIST_DIR=%MSVC_REDIST_DIR% /DQZ_BIN_DIR=%QZ_BIN_DIR% /DQT_CREATOR_BIN_DIR=%QT_CREATOR_BIN_DIR% /DQT_DIR=%QTDIR% /DQT_BIN_DIR=%QTDIR%\bin /DQT_PLUGINS_DIR=%QTDIR%\plugins /DHUNSPELL_DIR=%HUNSPELL_DIR% installer.nsi
+  - call "C:\Program Files (x86)\NSIS\makensis.exe" /DCUSTOM_PATH=1 /DMSVC_VER=%VSVER%0 /DOPENSSL_BIN_DIR=%OPENSSL_BIN_DIR% /DMSVC_REDIST_DIR=%MSVC_REDIST_DIR% /DQZ_BIN_DIR=%QZ_BIN_DIR% /DQT_CREATOR_BIN_DIR=%ICU_BIN_DIR% /DQT_DIR=%QTDIR% /DQT_BIN_DIR=%QTDIR%\bin /DQT_PLUGINS_DIR=%QTDIR%\plugins /DHUNSPELL_DIR=%HUNSPELL_DIR% installer.nsi
   - dir
 
 artifacts:
