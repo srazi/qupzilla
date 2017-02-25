@@ -20,6 +20,7 @@ RequestExecutionLevel admin
 !addplugindir "wininstall\"
 
 !ifndef CUSTOM_PATH
+  !define VERSION "2.1.0"
   !define MSVC_VER 120
   !define OPENSSL_BIN_DIR .
   !define MSVC_REDIST_DIR .
@@ -36,7 +37,7 @@ RequestExecutionLevel admin
 SetCompressor /SOLID /FINAL lzma
 
 !define PRODUCT_NAME "QupZilla"
-!define /date PRODUCT_VERSION "2.1.0"
+!define /date PRODUCT_VERSION ${VERSION}
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\qupzilla.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
@@ -140,6 +141,7 @@ notRunning:
   File "${QT_BIN_DIR}\Qt5QuickWidgets.dll"
   File "${QT_BIN_DIR}\Qt5Sql.dll"
   File "${QT_BIN_DIR}\Qt5Svg.dll"
+  File "${QT_BIN_DIR}\Qt5WinExtras.dll"
   File "${QT_BIN_DIR}\Qt5WebEngine.dll"
   File "${QT_BIN_DIR}\Qt5WebEngineCore.dll"
   File "${QT_BIN_DIR}\Qt5WebEngineWidgets.dll"
