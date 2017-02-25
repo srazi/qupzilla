@@ -69,10 +69,10 @@ after_build:
   - cd windows
   - mkdir dependencies
   - cd dependencies
-  - IF NOT EXIST "KillProcDll&FindProcDll.zip" (
-        curl -fsS -o "KillProcDll&FindProcDll.zip" http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip && echo "Now WGET" && wget http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip && dir) else ( echo "Use cache KillProcDll")
   - IF NOT EXIST "KillProcDll&FindProscDll.zip" (
         wget http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip && dir) else ( echo "Use cache KillProcDll WGET")
+  - IF NOT EXIST "KillProcDll&FindProcDll.zip" (
+        curl -fsS -o "KillProcDll&FindProcDll.zip" http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip && dir) else ( echo "Use cache KillProcDll")
   - IF NOT EXIST "Registry.zip" (
         appveyor DownloadFile http://nsis.sourceforge.net/mediawiki/images/4/47/Registry.zip ) else (echo "Use cache Registry")
   - IF NOT EXIST "AppAssocReg-0.4.zip" (
