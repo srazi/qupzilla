@@ -116,10 +116,10 @@ after_build:
   - set OPENSSL_BIN_DIR="%OPENSSL_DIR%\bin"
   - set MSVC_REDIST_DIR="C:\Program Files (x86)\Microsoft Visual Studio "%VSVER%".0\VC\redist\%PLATFORM%\Microsoft.VC%VSVER%0.CRT"
   - set ICU_BIN_DIR="%QZ_BIN_DIR%\..\windows\wininstall\icu\bin"
-  - IF "%PLATFORM%" == "x64" (set ICU_BIN_DIR="%QZ_BIN_DIR%\windows\wininstall\icu\bin64")
+  - IF "%PLATFORM%" == "x64" (set ICU_BIN_DIR="%QZ_BIN_DIR%\..\windows\wininstall\icu\bin64")
   - set QT_BIN_DIR="%QTDIR%\bin"
   - set QT_PLUGINS_DIR="%QTDIR%\plugins"
-  - set HUNSPELL_DIR="%QZ_BIN_DIR%\windows\wininstall\hunspell"
+  - set HUNSPELL_DIR="%QZ_BIN_DIR%\..\windows\wininstall\hunspell"
   # make installer
   - call "C:\Program Files (x86)\NSIS\makensis.exe" /DCUSTOM_PATH=1 /DMSVC_VER=%VSVER%0 /DOPENSSL_BIN_DIR=%OPENSSL_BIN_DIR% /DMSVC_REDIST_DIR=%MSVC_REDIST_DIR% /DQZ_BIN_DIR=%QZ_BIN_DIR% /DQT_CREATOR_BIN_DIR=%ICU_BIN_DIR% /DQT_DIR=%QTDIR% /DQT_BIN_DIR=%QTDIR%\bin /DQT_PLUGINS_DIR=%QTDIR%\plugins /DHUNSPELL_DIR=%HUNSPELL_DIR% installer.nsi
   - dir
