@@ -29,12 +29,12 @@ environment:
       QTDIR: C:\Qt\5.7\msvc2015
       QMAKESPEC: win32-msvc2015
       VSVER: 14
-    - PLATFORM: x64
-      QTVER: 5.7
-      QTDIR: C:\Qt\5.7\msvc2015_64
-      QMAKESPEC: win32-msvc2015
-      VSVER: 14
-      OPENSSL_DIR : C:\OpenSSL-Win64
+    # - PLATFORM: x64
+      # QTVER: 5.7
+      # QTDIR: C:\Qt\5.7\msvc2015_64
+      # QMAKESPEC: win32-msvc2015
+      # VSVER: 14
+      # OPENSSL_DIR : C:\OpenSSL-Win64
 
 install:
   - call "C:\Program Files (x86)\Microsoft Visual Studio "%VSVER%".0\VC\vcvarsall.bat" %PLATFORM%
@@ -65,6 +65,7 @@ after_build:
   - cd windows
   - mkdir dependencies
   - cd dependencies
+  - dir
   - IF NOT EXIST "KillProcDllFindProcDll.zip" (
         appveyor DownloadFile "http://github.com/srazi/qupzilla/raw/NSIS-Plugins-for-installer/windows/dependencies/KillProcDllFindProcDll.zip" ) else ( echo "Use cache KillProcDll")
   - IF NOT EXIST "Registry.zip" (
@@ -83,8 +84,8 @@ after_build:
   - 7z x "..\dependencies\KillProcDllFindProcDll.zip"
   - 7z x ..\dependencies\Registry.zip
   - 7z x ..\dependencies\AppAssocReg-0.4.zip
-  - copy Registry\Desktop\Plugin\*.dll .\
-  - copy AppAssocReg-0.4\Plugins\*.dll .\
+  - copy Desktop\Plugin\*.dll .\
+  - copy Plugins\*.dll .\
   # prepare hunspell 
   - mkdir hunspell
   - cd hunspell
