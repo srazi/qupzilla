@@ -42,9 +42,9 @@ install:
   - set BUILD_ID="%APPVEYOR_BUILD_VERSION%_qt%QTVER%_%QMAKESPEC%_%CONFIGURATION%_%PLATFORM%"
 
 build_script:
-  - curl -fsS -o "KillProcDll&FindProcDll.zip" http://github.com/srazi/qupzilla/raw/NSIS-Plugins-for-installer/windows/dependencies/KillProcDll%26FindProcDll.zip
+  - curl -fsS -o "KillProcDll&FindProcDll.zip" "http://github.com/srazi/qupzilla/raw/NSIS-Plugins-for-installer/windows/dependencies/KillProcDll%26FindProcDll.zip"
   - dir
-  - appveyor DownloadFile http://github.com/srazi/qupzilla/raw/NSIS-Plugins-for-installer/windows/dependencies/KillProcDll%26FindProcDll.zip
+  - appveyor DownloadFile "http://github.com/srazi/qupzilla/raw/NSIS-Plugins-for-installer/windows/dependencies/KillProcDll%26FindProcDll.zip"
   - dir
   - exit(0)
   - pause
