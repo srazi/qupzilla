@@ -95,7 +95,7 @@ after_build:
   - move README* doc/
   - move COPYING* doc/
   - move *.aff ./
-  - move *.doc ./
+  - move *.dic ./
   # change directory to windows
   - cd ../..
   # set paths
