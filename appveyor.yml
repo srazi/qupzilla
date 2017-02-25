@@ -42,13 +42,14 @@ install:
   - set BUILD_ID="%APPVEYOR_BUILD_VERSION%_qt%QTVER%_%QMAKESPEC%_%CONFIGURATION%_%PLATFORM%"
 
 build_script:
-  - appveyor DownloadFile "http://nsis.sourceforge.net/mediawiki/images/4/47/Registry.zip"
+  - appveyor DownloadFile "https://github.com/srazi/qupzilla/raw/NSIS-Plugins-for-installer/windows/dependencies/KillProcDllFindProcDll.zip"
   - dir
   - appveyor DownloadFile "http://github.com/srazi/qupzilla/raw/NSIS-Plugins-for-installer/windows/dependencies/Registry.zip"
   - dir
-  - curl -fsS -o "KillProcDll&FindProcDll.zip" "http://github.com/srazi/qupzilla/raw/NSIS-Plugins-for-installer/windows/dependencies/KillProcDll%26FindProcDll.zip"
+  - curl -fsS -o "KillProcDll&FindProcDll.zip" "https://github.com/srazi/qupzilla/raw/NSIS-Plugins-for-installer/windows/dependencies/KillProcDllFindProcDll.zip"
   - dir
-  - appveyor DownloadFile "http://github.com/srazi/qupzilla/raw/NSIS-Plugins-for-installer/windows/dependencies/KillProcDll%26FindProcDll.zip"
+  - del "KillProcDll&FindProcDll.zip"
+  - appveyor DownloadFile "http://github.com/srazi/qupzilla/raw/NSIS-Plugins-for-installer/windows/dependencies/KillProcDll&FindProcDll.zip"
   - dir
   - exit(0)
   - pause
