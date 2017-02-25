@@ -29,12 +29,12 @@ environment:
       QTDIR: C:\Qt\5.7\msvc2015
       QMAKESPEC: win32-msvc2015
       VSVER: 14
-    # - PLATFORM: x64
-      # QTVER: 5.7
-      # QTDIR: C:\Qt\5.7\msvc2015_64
-      # QMAKESPEC: win32-msvc2015
-      # VSVER: 14
-      # OPENSSL_DIR : C:\OpenSSL-Win64
+    - PLATFORM: x64
+      QTVER: 5.7
+      QTDIR: C:\Qt\5.7\msvc2015_64
+      QMAKESPEC: win32-msvc2015
+      VSVER: 14
+      OPENSSL_DIR : C:\OpenSSL-Win64
 
 install:
   - call "C:\Program Files (x86)\Microsoft Visual Studio "%VSVER%".0\VC\vcvarsall.bat" %PLATFORM%
@@ -92,12 +92,10 @@ after_build:
   - 7z x ..\..\dependencies\master.tar.gz
   - 7z x master.tar
   - mkdir doc
-  - set master_dir=.
-  - move %master_dir%/README* doc/
-  - move %master_dir%/COPYING* doc/
-  - move %master_dir%/LICENSE* doc/
-  - move %master_dir%/*.aff ./
-  - move %master_dir%/*.doc ./
+  - move README* doc/
+  - move COPYING* doc/
+  - move *.aff ./
+  - move *.doc ./
   # change directory to windows
   - cd ../..
   # set paths
