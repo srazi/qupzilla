@@ -36,7 +36,7 @@ environment:
 
 install:
   - set CPU_ARCH=32
-  - IF "%PLATFORM%" == "x64" ( set CPU_ARCH=64 )
+  - IF "%PLATFORM%" == "x64" (set CPU_ARCH=64)
   - set OPENSSL_DIR="C:\OpenSSL-Win%CPU_ARCH%"
   - set ICU_DIR_NAME=icu4c-54_1-Win%CPU_ARCH%-msvc10
   - set ICU_DOWNLOAD_URL="http://download.icu-project.org/files/icu4c/54.1/%ICU_DIR_NAME%.zip"
@@ -112,7 +112,8 @@ after_build:
   # set paths
   - set OPENSSL_BIN_DIR="%OPENSSL_DIR%\bin"
   - set MSVC_REDIST_DIR="C:\Program Files (x86)\Microsoft Visual Studio "%VSVER%".0\VC\redist\%PLATFORM%\Microsoft.VC%VSVER%0.CRT"
-  - set ICU_BIN_DIR="%QZ_BIN_DIR%\windows\wininstall\icu\bin%CPU_ARCH%"
+  - set ICU_BIN_DIR="%QZ_BIN_DIR%\windows\wininstall\icu\bin"
+  - IF "%PLATFORM%" == "x64" (set ICU_BIN_DIR="%QZ_BIN_DIR%\windows\wininstall\icu\bin64")
   - set QT_BIN_DIR="%QTDIR%\bin"
   - set QT_PLUGINS_DIR="%QTDIR%\plugins"
   - set HUNSPELL_DIR="%QZ_BIN_DIR%\windows\wininstall\hunspell"
