@@ -20,7 +20,7 @@ RequestExecutionLevel admin
 !addplugindir "wininstall\"
 
 !ifndef CUSTOM_PATH
-  !define VERSION "2.1.0"
+  !define VERSION 2.1.0
   !define MSVC_VER 120
   !define OPENSSL_BIN_DIR .
   !define MSVC_REDIST_DIR .
@@ -37,7 +37,7 @@ RequestExecutionLevel admin
 SetCompressor /SOLID /FINAL lzma
 
 !define PRODUCT_NAME "QupZilla"
-!define /date PRODUCT_VERSION ${VERSION}
+!define /date PRODUCT_VERSION "${VERSION}"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\qupzilla.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
