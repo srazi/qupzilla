@@ -35,8 +35,8 @@ environment:
       VSVER: 14
 
 install:
-  - CPU_ARCH=32
-  - IF "%PLATFORM%" == "x64" ( CPU_ARCH=64 )
+  - set CPU_ARCH=32
+  - IF "%PLATFORM%" == "x64" ( set CPU_ARCH=64 )
   - set OPENSSL_DIR="C:\OpenSSL-Win%CPU_ARCH%"
   - set ICU_DIR_NAME=icu4c-54_1-Win%CPU_ARCH%-msvc10
   - set ICU_DOWNLOAD_URL="http://download.icu-project.org/files/icu4c/54.1/%ICU_DIR_NAME%.zip"
