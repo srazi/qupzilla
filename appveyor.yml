@@ -20,7 +20,7 @@ branches:
 
 environment:
   global:
-    VERSION: 2.1.99
+    QZ_VER: 2.1.99
     MAKETOOL: jom
     TOOLSDIR: C:\Qt\Tools\QtCreator
     PLATFORM: x86
@@ -123,13 +123,13 @@ after_build:
   - set QT_PLUGINS_DIR="%QTDIR%\plugins"
   - set HUNSPELL_DIR="%QZ_BIN_DIR%\..\windows\wininstall\hunspell"
   # make installer
-  - call "C:\Program Files (x86)\NSIS\makensis.exe" /X"Unicode true" /DCUSTOM_PATH=1 /DVERSION="%VERSION% (%PLATFORM%)" /DMSVC_VER=%VSVER%0 /DOPENSSL_BIN_DIR=%OPENSSL_BIN_DIR% /DMSVC_REDIST_DIR=%MSVC_REDIST_DIR% /DQZ_BIN_DIR=%QZ_BIN_DIR% /DQT_CREATOR_BIN_DIR=%ICU_BIN_DIR% /DQT_DIR=%QTDIR% /DQT_BIN_DIR=%QTDIR%\bin /DQT_PLUGINS_DIR=%QTDIR%\plugins /DHUNSPELL_DIR=%HUNSPELL_DIR% installer.nsi
+  - call "C:\Program Files (x86)\NSIS\makensis.exe" /X"Unicode true" /DCUSTOM_PATH=1 /DVERSION="%QZ_VER% (%PLATFORM%)" /DMSVC_VER=%VSVER%0 /DOPENSSL_BIN_DIR=%OPENSSL_BIN_DIR% /DMSVC_REDIST_DIR=%MSVC_REDIST_DIR% /DQZ_BIN_DIR=%QZ_BIN_DIR% /DQT_CREATOR_BIN_DIR=%ICU_BIN_DIR% /DQT_DIR=%QTDIR% /DQT_BIN_DIR=%QTDIR%\bin /DQT_PLUGINS_DIR=%QTDIR%\plugins /DHUNSPELL_DIR=%HUNSPELL_DIR% installer.nsi
   - dir
-init:
-  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# init:
+  # - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
-on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# on_finish:
+  # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 artifacts:
    - path: QupZilla*.exe
