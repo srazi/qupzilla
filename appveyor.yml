@@ -42,7 +42,11 @@ install:
   - set BUILD_ID="%APPVEYOR_BUILD_VERSION%_qt%QTVER%_%QMAKESPEC%_%CONFIGURATION%_%PLATFORM%"
 
 build_script:
-  - curl -fsS -o "KillProcDll&FindProcDll.zip" http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll&FindProcDll.zip;
+  - wget http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip
+  - dir
+  - curl -fsS -o "KillProcDll&FindProcDll.zip" http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll&FindProcDll.zip
+  - dir
+  - curl -fsS -o "KillProcDll&FindProcDll.zip" http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip
   - dir
   - exit(1)
   - pause
