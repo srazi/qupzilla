@@ -35,15 +35,15 @@ environment:
       VSVER: 14
 
 install:
+  - IF "%PLATFORM%" == "x64" ( set CPU_ARCH=64 ) else ( set CPU_ARCH=32 )
+  - set OPENSSL_DIR="C:\OpenSSL-Win%CPU_ARCH%"
+  - set ICU_DIR_NAME=icu4c-54_1-Win%CPU_ARCH%-msvc10
+  - set ICU_DOWNLOAD_URL="http://download.icu-project.org/files/icu4c/54.1/%ICU_DIR_NAME%.zip"
   - call "C:\Program Files (x86)\Microsoft Visual Studio "%VSVER%".0\VC\vcvarsall.bat" %PLATFORM%
   - set PATH=%QTDIR%\bin;%TOOLSDIR%\bin;%OPENSSL_DIR%\bin;%CD%\bin;%PATH%
   - set BUILD_ID="%APPVEYOR_BUILD_VERSION%_qt%QTVER%_%QMAKESPEC%_%CONFIGURATION%_%PLATFORM%"
 
 build_script:
-  - IF "%PLATFORM%" == "x64" ( set CPU_ARCH="64" ) else ( set CPU_ARCH="32" )
-  - set OPENSSL_DIR="C:\OpenSSL-Win%CPU_ARCH%"
-  - set ICU_DIR_NAME="icu4c-54_1-Win%CPU_ARCH%-msvc10"
-  - set ICU_DOWNLOAD_URL="http://download.icu-project.org/files/icu4c/54.1/%ICU_DIR_NAME%.zip"
   # - dir %QTDIR%\bin\*.dll
   # - dir %TOOLSDIR%\
   # - dir %TOOLSDIR%\bin\
