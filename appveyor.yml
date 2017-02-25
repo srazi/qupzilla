@@ -115,7 +115,7 @@ after_build:
   # set paths
   - set OPENSSL_BIN_DIR="%OPENSSL_DIR%\bin"
   - set MSVC_REDIST_DIR="C:\Program Files (x86)\Microsoft Visual Studio "%VSVER%".0\VC\redist\%PLATFORM%\Microsoft.VC%VSVER%0.CRT"
-  - set ICU_BIN_DIR="%QZ_BIN_DIR%\windows\wininstall\icu\bin"
+  - set ICU_BIN_DIR="%QZ_BIN_DIR%\..\windows\wininstall\icu\bin"
   - IF "%PLATFORM%" == "x64" (set ICU_BIN_DIR="%QZ_BIN_DIR%\windows\wininstall\icu\bin64")
   - set QT_BIN_DIR="%QTDIR%\bin"
   - set QT_PLUGINS_DIR="%QTDIR%\plugins"
