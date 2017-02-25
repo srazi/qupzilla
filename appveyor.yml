@@ -72,6 +72,9 @@ after_build:
   - cd windows
   - mkdir dependencies
   - cd dependencies
+  - IF NOT EXIST "nsis-2.50.0-Unicode.zip" (
+        appveyor DownloadFile "http://github.com/jimpark/unsis/releases/download/2.50.0/nsis-2.50.0-Unicode.zip" 
+        && 7z x nsis-2.50.0-Unicode.zip )
   - dir
   - IF NOT EXIST "%ICU_DIR_NAME%.zip" ( appveyor DownloadFile %ICU_DOWNLOAD_URL% ) else ( echo "Use cache %ICU_DIR_NAME%")
   - IF NOT EXIST "KillProcDllFindProcDll.zip" (
@@ -93,7 +96,7 @@ after_build:
   - 7z x ..\dependencies\Registry.zip
   - 7z x ..\dependencies\AppAssocReg-0.4.zip
   - copy Desktop\Plugin\*.dll .\
-  - copy Plugins\*.dll .\
+  - copy Plugins\Unicode\*.dll .\
   # prepare icu
   - 7z x "..\dependencies\%ICU_DIR_NAME%.zip"
   # - copy icu\bin%CPU_ARCH%\*.dll .\
@@ -121,7 +124,7 @@ after_build:
   - set QT_PLUGINS_DIR="%QTDIR%\plugins"
   - set HUNSPELL_DIR="%QZ_BIN_DIR%\..\windows\wininstall\hunspell"
   # make installer
-  - call "C:\Program Files (x86)\NSIS\makensis.exe" /DCUSTOM_PATH=1 /DMSVC_VER=%VSVER%0 /DOPENSSL_BIN_DIR=%OPENSSL_BIN_DIR% /DMSVC_REDIST_DIR=%MSVC_REDIST_DIR% /DQZ_BIN_DIR=%QZ_BIN_DIR% /DQT_CREATOR_BIN_DIR=%ICU_BIN_DIR% /DQT_DIR=%QTDIR% /DQT_BIN_DIR=%QTDIR%\bin /DQT_PLUGINS_DIR=%QTDIR%\plugins /DHUNSPELL_DIR=%HUNSPELL_DIR% installer.nsi
+  - call "%QZ_BIN_DIR%\..\windows\dependencies\nsis-2.50.0-Unicode\makensis.exe" /DCUSTOM_PATH=1 /DMSVC_VER=%VSVER%0 /DOPENSSL_BIN_DIR=%OPENSSL_BIN_DIR% /DMSVC_REDIST_DIR=%MSVC_REDIST_DIR% /DQZ_BIN_DIR=%QZ_BIN_DIR% /DQT_CREATOR_BIN_DIR=%ICU_BIN_DIR% /DQT_DIR=%QTDIR% /DQT_BIN_DIR=%QTDIR%\bin /DQT_PLUGINS_DIR=%QTDIR%\plugins /DHUNSPELL_DIR=%HUNSPELL_DIR% installer.nsi
   - dir
 
 artifacts:
