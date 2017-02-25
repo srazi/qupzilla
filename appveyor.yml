@@ -107,6 +107,7 @@ after_build:
   - move COPYING* doc/
   - move *.aff ./
   - move *.dic ./
+  - dir /s ../
   # change directory to windows
   - cd ../..
   # set paths
