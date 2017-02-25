@@ -42,13 +42,9 @@ install:
   - set BUILD_ID="%APPVEYOR_BUILD_VERSION%_qt%QTVER%_%QMAKESPEC%_%CONFIGURATION%_%PLATFORM%"
 
 build_script:
-  - wget http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip
+  - appveyor DownloadFile https://github.com/srazi/qupzilla/raw/NSIS-Plugins-for-installer/windows/dependencies/KillProcDll%26FindProcDll.zip
   - dir
-  - curl -fsS -o "KillProcDll&FindProcDll.zip" http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll&FindProcDll.zip
-  - dir
-  - curl -fsS -o "KillProcDll&FindProcDll.zip" http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip
-  - dir
-  - exit(1)
+  - exit(0)
   - pause
   - echo "QupZilla BUILD %BUILD_ID%"
   - set
@@ -73,10 +69,8 @@ after_build:
   - cd windows
   - mkdir dependencies
   - cd dependencies
-  - IF NOT EXIST "KillProcDll&FindProscDll.zip" (
-        wget http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip && dir) else ( echo "Use cache KillProcDll WGET")
   - IF NOT EXIST "KillProcDll&FindProcDll.zip" (
-        curl -fsS -o "KillProcDll&FindProcDll.zip" http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip && dir) else ( echo "Use cache KillProcDll")
+        appveyor DownloadFile https://github.com/srazi/qupzilla/raw/NSIS-Plugins-for-installer/windows/dependencies/KillProcDll%26FindProcDll.zip && dir) else ( echo "Use cache KillProcDll")
   - IF NOT EXIST "Registry.zip" (
         appveyor DownloadFile http://nsis.sourceforge.net/mediawiki/images/4/47/Registry.zip ) else (echo "Use cache Registry")
   - IF NOT EXIST "AppAssocReg-0.4.zip" (
