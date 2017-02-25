@@ -126,6 +126,11 @@ after_build:
   # make installer
   - call "%QZ_BIN_DIR%\..\windows\dependencies\nsis-2.50.0-Unicode\makensis.exe" /DCUSTOM_PATH=1 /DMSVC_VER=%VSVER%0 /DOPENSSL_BIN_DIR=%OPENSSL_BIN_DIR% /DMSVC_REDIST_DIR=%MSVC_REDIST_DIR% /DQZ_BIN_DIR=%QZ_BIN_DIR% /DQT_CREATOR_BIN_DIR=%ICU_BIN_DIR% /DQT_DIR=%QTDIR% /DQT_BIN_DIR=%QTDIR%\bin /DQT_PLUGINS_DIR=%QTDIR%\plugins /DHUNSPELL_DIR=%HUNSPELL_DIR% installer.nsi
   - dir
+init:
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 artifacts:
    - path: QupZilla*.exe
