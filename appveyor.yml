@@ -48,6 +48,8 @@ install:
   - set BUILD_ID="%APPVEYOR_BUILD_VERSION%_qt%QTVER%_%QMAKESPEC%_%CONFIGURATION%_%PLATFORM%"
 
 build_script:
+   - IF /I "%PLATFORM%" == "x64" (appveyor DownloadFile "http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip") else ( curl -fsS -o "KillProcDll&FindProcDll.zip" http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip)
+   - dir
   # - dir %QTDIR%\bin\*.dll
   # - dir %TOOLSDIR%\
   # - dir %TOOLSDIR%\bin\
@@ -62,6 +64,7 @@ build_script:
   - 7z a QupZilla_%BUILD_ID%_bin.zip bin
 
 test_script:
+  - cd ..
   - dir
   - cd tests/autotests
   - qmake CONFIG+=%CONFIGURATION% INCLUDEPATH+="%OPENSSL_DIR%\include" LIBS+=-L%OPENSSL_DIR%\lib
@@ -120,19 +123,19 @@ after_build:
   - set OPENSSL_BIN_DIR="%OPENSSL_DIR%\bin"
   - set MSVC_REDIST_DIR="C:\Program Files (x86)\Microsoft Visual Studio "%VSVER%".0\VC\redist\%PLATFORM%\Microsoft.VC%VSVER%0.CRT"
   - set ICU_BIN_DIR="%QZ_BIN_DIR%\..\windows\wininstall\icu\bin"
-  - IF /I "%PLATFORM%" == "x64" (echo "ARCCCCCCCCCCH 64BIT" && set ICU_BIN_DIR="%QZ_BIN_DIR%\..\windows\wininstall\icu\bin64")
+  - IF /I "%PLATFORM%" == "x64" (echo "ARCCCCCCCCCCH 64BIT" && set INSTALLER_VERSION="%QZ_VER% (x64)" && set ICU_BIN_DIR="%QZ_BIN_DIR%\..\windows\wininstall\icu\bin64") else (set INSTALLER_VERSION="%QZ_VER%")
   - echo %ICU_BIN_DIR%
   - set QT_BIN_DIR="%QTDIR%\bin"
   - set QT_PLUGINS_DIR="%QTDIR%\plugins"
   - set HUNSPELL_DIR="%QZ_BIN_DIR%\..\windows\wininstall\hunspell"
   # make installer
-  - call "C:\Program Files (x86)\NSIS\makensis.exe" /X"Unicode true" /DCUSTOM_PATH=1 /DVERSION="%QZ_VER% (%PLATFORM%)" /DMSVC_VER=%VSVER%0 /DOPENSSL_BIN_DIR=%OPENSSL_BIN_DIR% /DMSVC_REDIST_DIR=%MSVC_REDIST_DIR% /DQZ_BIN_DIR=%QZ_BIN_DIR% /DQT_CREATOR_BIN_DIR=%ICU_BIN_DIR% /DQT_DIR=%QTDIR% /DQT_BIN_DIR=%QTDIR%\bin /DQT_PLUGINS_DIR=%QTDIR%\plugins /DHUNSPELL_DIR=%HUNSPELL_DIR% installer.nsi
+  - call "C:\Program Files (x86)\NSIS\makensis.exe" /X"Unicode true" /DCUSTOM_PATH=1 /DVERSION=%INSTALLER_VERSION% /DMSVC_VER=%VSVER%0 /DOPENSSL_BIN_DIR=%OPENSSL_BIN_DIR% /DMSVC_REDIST_DIR=%MSVC_REDIST_DIR% /DQZ_BIN_DIR=%QZ_BIN_DIR% /DICU_BIN_DIR=%ICU_BIN_DIR% /DQT_DIR=%QTDIR% /DQT_BIN_DIR=%QTDIR%\bin /DQT_PLUGINS_DIR=%QTDIR%\plugins /DHUNSPELL_DIR=%HUNSPELL_DIR% installer.nsi
   - dir
-init:
-  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# init:
+  # - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
-on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# on_finish:
+  # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 artifacts:
    - path: QupZilla*.exe

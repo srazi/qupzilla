@@ -25,7 +25,7 @@ RequestExecutionLevel admin
   !define OPENSSL_BIN_DIR .
   !define MSVC_REDIST_DIR .
   !define QZ_BIN_DIR .
-  !define QT_CREATOR_BIN_DIR .
+  !define ICU_BIN_DIR .
   !define QT_DIR .
   !define QT_BIN_DIR .
   !define QT_PLUGINS_DIR .
@@ -124,9 +124,9 @@ notRunning:
   File "${OPENSSL_BIN_DIR}\libeay32.dll"
   File "${OPENSSL_BIN_DIR}\ssleay32.dll"
   File "${MSVC_REDIST_DIR}\*"
-  File "${QT_CREATOR_BIN_DIR}\icudt54.dll"
-  File "${QT_CREATOR_BIN_DIR}\icuin54.dll"
-  File "${QT_CREATOR_BIN_DIR}\icuuc54.dll"
+  File "${ICU_BIN_DIR}\icudt54.dll"
+  File "${ICU_BIN_DIR}\icuin54.dll"
+  File "${ICU_BIN_DIR}\icuuc54.dll"
   File "${QT_BIN_DIR}\libEGL.dll"
   File "${QT_BIN_DIR}\libGLESv2.dll"
   File "${QT_BIN_DIR}\opengl32sw.dll"
