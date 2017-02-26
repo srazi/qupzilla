@@ -70,19 +70,17 @@ after_build:
   - echo [Paths] > %QZ_BIN_DIR%\qt.conf && echo Plugins="." >> %QZ_BIN_DIR%\qt.conf
   - copy  %QZ_BIN_DIR%\..\COPYRIGHT %QZ_BIN_DIR%\COPYRIGHT.txt
   - cd windows
-  - mkdir dependencies
+  - IF NOT EXIST "dependencies" ( mkdir dependencies )
   - cd dependencies
-  - dir
-  - IF NOT EXIST "%ICU_DIR_NAME%.zip" ( appveyor DownloadFile %ICU_DOWNLOAD_URL% ) else ( echo "Use cache %ICU_DIR_NAME%")
+  - IF NOT EXIST "%ICU_DIR_NAME%.zip" ( appveyor DownloadFile %ICU_DOWNLOAD_URL% ) else ( echo "Use cached %ICU_DIR_NAME%.zip")
   - IF NOT EXIST "KillProcDllFindProcDll.zip" (
-        appveyor DownloadFile "http://github.com/srazi/qupzilla/raw/NSIS-Plugins-for-installer/windows/dependencies/KillProcDllFindProcDll.zip" ) else ( echo "Use cache KillProcDll")
+        appveyor DownloadFile "http://github.com/srazi/qupzilla/raw/NSIS-Plugins-for-installer/windows/dependencies/KillProcDllFindProcDll.zip" ) else ( echo "Use cached KillProcDllFindProcDll.zip")
   - IF NOT EXIST "Registry.zip" (
-        appveyor DownloadFile "http://nsis.sourceforge.net/mediawiki/images/4/47/Registry.zip" ) else (echo "Use cache Registry")
+        appveyor DownloadFile "http://nsis.sourceforge.net/mediawiki/images/4/47/Registry.zip" ) else (echo "Use cached Registry.zip")
   - IF NOT EXIST "AppAssocReg-0.4.zip" (
-        appveyor DownloadFile "http://nsis.sourceforge.net/mediawiki/images/d/d4/AppAssocReg-0.4.zip" ) else (echo "Use cache Registry")
+        appveyor DownloadFile "http://nsis.sourceforge.net/mediawiki/images/d/d4/AppAssocReg-0.4.zip" ) else (echo "Use cached AppAssocReg-0.4.zip")
   - IF NOT EXIST "master.tar.gz" (
-        appveyor DownloadFile "http://chromium.googlesource.com/chromium/deps/hunspell_dictionaries/+archive/master.tar.gz" ) else (echo "Use cache Registry")
-  - dir
+        appveyor DownloadFile "http://chromium.googlesource.com/chromium/deps/hunspell_dictionaries/+archive/master.tar.gz" ) else (echo "Use cached master.tar.gz")
   - mkdir ..\wininstall
   - cd ..\wininstall
   - copy ..\*.nsh .\
