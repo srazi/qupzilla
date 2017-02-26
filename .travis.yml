@@ -6,7 +6,7 @@ cache:
   - brew
 
 os:
-  - linux
+  # - linux
   # - osx
 
 env:

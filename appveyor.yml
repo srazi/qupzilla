@@ -38,7 +38,7 @@ environment:
 
 install:
   - set CPU_ARCH=32
-  - IF IF /I "%PLATFORM%" == "x64" (echo "ARCCCCCCCCCCH 64BIT" && set CPU_ARCH=64)
+  - IF /I "%PLATFORM%" == "x64" (echo "ARCCCCCCCCCCH 64BIT" && set CPU_ARCH=64)
   - echo %CPU_ARCH%
   - set OPENSSL_DIR="C:\OpenSSL-Win%CPU_ARCH%"
   - set ICU_DIR_NAME=icu4c-54_1-Win%CPU_ARCH%-msvc10
