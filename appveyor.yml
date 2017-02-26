@@ -37,6 +37,8 @@ environment:
       VSVER: 14
 
 install:
+  - dir
+  - set QZ_DIR=%CD%
   - set CPU_ARCH=32
   - IF /I "%PLATFORM%" == "x64" (echo "ARCCCCCCCCCCH 64BIT" && set CPU_ARCH=64)
   - echo %CPU_ARCH%
@@ -50,7 +52,6 @@ install:
 build_script:
   - echo "QupZilla BUILD %BUILD_ID%"
   - set
-  - set QZ_BIN_DIR=%CD%\bin
   - dir C:\Qt
   - qmake -v
   - qmake CONFIG+=%CONFIGURATION% INCLUDEPATH+="%OPENSSL_DIR%\include" LIBS+=-L%OPENSSL_DIR%\lib QupZilla.pro
@@ -58,7 +59,7 @@ build_script:
 
 test_script:
   - dir
-  - cd tests/autotests
+  - cd %QZ_DIR%\tests\autotests
   - qmake CONFIG+=%CONFIGURATION% INCLUDEPATH+="%OPENSSL_DIR%\include" LIBS+=-L%OPENSSL_DIR%\lib
   - call %MAKETOOL%
   - call %CONFIGURATION%\autotests.exe
@@ -67,9 +68,9 @@ test_script:
 # after_build:
 before_deploy:
   # prepare dependencies
-  - echo [Paths] > %QZ_BIN_DIR%\qt.conf && echo Plugins="." >> %QZ_BIN_DIR%\qt.conf
-  - copy  %QZ_BIN_DIR%\..\COPYRIGHT %QZ_BIN_DIR%\COPYRIGHT.txt
-  - cd windows
+  - echo [Paths] > %QZ_DIR%\bin\qt.conf && echo Plugins="." >> %QZ_DIR%\bin\qt.conf
+  - copy  %QZ_DIR%\COPYRIGHT %QZ_DIR%\bin\COPYRIGHT.txt
+  - cd %QZ_DIR%\windows
   - IF NOT EXIST "dependencies" ( mkdir dependencies )
   - cd dependencies
   - IF NOT EXIST "%ICU_DIR_NAME%.zip" ( appveyor DownloadFile %ICU_DOWNLOAD_URL% ) else ( echo "Use cached %ICU_DIR_NAME%.zip")
@@ -113,14 +114,14 @@ before_deploy:
   # set paths
   - set OPENSSL_BIN_DIR="%OPENSSL_DIR%\bin"
   - set MSVC_REDIST_DIR="C:\Program Files (x86)\Microsoft Visual Studio "%VSVER%".0\VC\redist\%PLATFORM%\Microsoft.VC%VSVER%0.CRT"
-  - set ICU_BIN_DIR="%QZ_BIN_DIR%\..\windows\wininstall\icu\bin"
-  - IF /I "%PLATFORM%" == "x64" (echo "ARCCCCCCCCCCH 64BIT" && set INSTALLER_VERSION="%QZ_VER% (x64)" && set ICU_BIN_DIR="%QZ_BIN_DIR%\..\windows\wininstall\icu\bin64") else (set INSTALLER_VERSION="%QZ_VER%")
+  - set ICU_BIN_DIR="%QZ_DIR%\windows\wininstall\icu\bin"
+  - IF /I "%PLATFORM%" == "x64" (echo "ARCCCCCCCCCCH 64BIT" && set INSTALLER_VERSION="%QZ_VER% (x64)" && set ICU_BIN_DIR="%QZ_DIR%\windows\wininstall\icu\bin64") else (set INSTALLER_VERSION="%QZ_VER%")
   - echo %ICU_BIN_DIR%
   - set QT_BIN_DIR="%QTDIR%\bin"
   - set QT_PLUGINS_DIR="%QTDIR%\plugins"
-  - set HUNSPELL_DIR="%QZ_BIN_DIR%\..\windows\wininstall\hunspell"
+  - set HUNSPELL_DIR="%QZ_DIR%\windows\wininstall\hunspell"
   # make installer
-  - call "C:\Program Files (x86)\NSIS\makensis.exe" /X"Unicode true" /DCUSTOM_PATH=1 /DVERSION=%INSTALLER_VERSION% /DMSVC_VER=%VSVER%0 /DOPENSSL_BIN_DIR=%OPENSSL_BIN_DIR% /DMSVC_REDIST_DIR=%MSVC_REDIST_DIR% /DQZ_BIN_DIR=%QZ_BIN_DIR% /DICU_BIN_DIR=%ICU_BIN_DIR% /DQT_DIR=%QTDIR% /DQT_BIN_DIR=%QTDIR%\bin /DQT_PLUGINS_DIR=%QTDIR%\plugins /DHUNSPELL_DIR=%HUNSPELL_DIR% installer.nsi
+  - call "C:\Program Files (x86)\NSIS\makensis.exe" /X"Unicode true" /DCUSTOM_PATH=1 /DVERSION=%INSTALLER_VERSION% /DMSVC_VER=%VSVER%0 /DOPENSSL_BIN_DIR=%OPENSSL_BIN_DIR% /DMSVC_REDIST_DIR=%MSVC_REDIST_DIR% /DQZ_BIN_DIR=%QZ_DIR%\bin /DICU_BIN_DIR=%ICU_BIN_DIR% /DQT_DIR=%QTDIR% /DQT_BIN_DIR=%QTDIR%\bin /DQT_PLUGINS_DIR=%QTDIR%\plugins /DHUNSPELL_DIR=%HUNSPELL_DIR% installer.nsi
   - cd ..
 # init:
   # - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
@@ -139,7 +140,7 @@ artifacts:
 
 deploy:
     release: QupZilla-v$(appveyor_build_version)
-    description: 'QupZilla $(qz_ver) Windows Installer Released' 
+    description: 'QupZilla $(qz_ver) Windows Installer Released'  $(APPVEYOR_REPO_TAG_NAME)
     provider: GitHub
     auth_token:
       secure: BumEo5ic9KIrhc8RxwsKFd/L6WwC0s5LpSef9uH+PtUKICZBZAcyqnPewKUqzEFi                              # your encrypted token from GitHub
