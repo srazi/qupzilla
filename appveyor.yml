@@ -55,7 +55,6 @@ build_script:
   - qmake -v
   - qmake CONFIG+=%CONFIGURATION% INCLUDEPATH+="%OPENSSL_DIR%\include" LIBS+=-L%OPENSSL_DIR%\lib QupZilla.pro
   - call %MAKETOOL%
-  - 7z a QupZilla_%BUILD_ID%_bin.zip bin
 
 test_script:
   - cd ..
@@ -132,10 +131,8 @@ after_build:
   # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 artifacts:
-   - path: QupZilla*.exe
+   - path: windows\QupZilla*.exe
      name: QupZilla Installer (%PLATFORM%)
-   - path: QupZilla*.zip
-     name: Archived bin directory (%PLATFORM%)
    - path: bin\*.exe
      name: QupZilla Executable (%PLATFORM%)
    - path: bin\*.dll
