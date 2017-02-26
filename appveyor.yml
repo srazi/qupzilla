@@ -48,10 +48,14 @@ install:
   - set BUILD_ID="%APPVEYOR_BUILD_VERSION%_qt%QTVER%_%QMAKESPEC%_%CONFIGURATION%_%PLATFORM%"
 
 build_script:
-   - set
-   - appveyor DownloadFile "http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip"
-   - curl -fsS -o "KillProcDll&FindProcDll.zip" "http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip"
-   - dir
+  - set
+  - IF /I "%PLATFORM%" == "x64" ( appveyor DownloadFile "http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip" )
+  - IF /I "%PLATFORM%" == "x86" ( curl -fsS -o "KillProcDll&FindProcDll.zip" "http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip" )
+  - dir
+  # - dir %QTDIR%\bin\*.dll
+  # - dir %TOOLSDIR%\
+  # - dir %TOOLSDIR%\bin\
+  # - exit(1)
   - echo "QupZilla BUILD %BUILD_ID%"
   - set
   - set QZ_BIN_DIR=%CD%\bin
