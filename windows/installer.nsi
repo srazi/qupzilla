@@ -16,11 +16,13 @@ RequestExecutionLevel admin
 ; if ___WINVER__NSH___ is defined to determine if RequestExecutionLevel is
 ; available.
 !include /NONFATAL WinVer.nsh
+!include x64.nsh
 
 !addplugindir "wininstall\"
 
 !ifndef CUSTOM_PATH
   !define VERSION 2.1.0
+  !define ARCH x86
   !define MSVC_VER 120
   !define OPENSSL_BIN_DIR .
   !define MSVC_REDIST_DIR .
@@ -330,6 +332,22 @@ SectionEnd
 BrandingText "${PRODUCT_NAME} ${PRODUCT_VERSION} Installer"
 
 Function .onInit
+        ;Prevent running installer of 64-bit QupZilla on 32-bit Windows
+        ${If} ${RunningX64}
+          ${If} ${ARCH} == "x64"
+            StrCpy $InstDir "$PROGRAMFILES64\${PRODUCT_NAME}\"
+          ${Else}
+            StrCpy $InstDir "$PROGRAMFILES32\${PRODUCT_NAME}\"
+          ${Endif}
+        ${Else}
+          ${If} ${ARCH} == "x64"
+            MessageBox MB_OK|MB_ICONEXCLAMATION "This installation requiers Windows x64!"
+            Quit
+          ${Else}
+            StrCpy $InstDir "$PROGRAMFILES\${PRODUCT_NAME}\"
+          ${Endif}
+        ${EndIf}
+
         ;Prevent Multiple Instances
         System::Call 'kernel32::CreateMutexA(i 0, i 0, t "QupZillaInstaller-4ECB4694-2C39-4f93-9122-A986344C4E7B") i .r1 ?e'
         Pop $R0
