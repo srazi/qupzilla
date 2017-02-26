@@ -7,12 +7,13 @@ cache:
 
 os:
   - linux
-  - osx
+  # - osx
 
 env:
   - QT=qt57
 
 before_install:
+  - export
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
          export DISPLAY=:99.0;
          sh -e /etc/init.d/xvfb start;

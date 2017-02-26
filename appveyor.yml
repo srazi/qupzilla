@@ -38,7 +38,8 @@ environment:
 
 install:
   - set CPU_ARCH=32
-  - IF "%PLATFORM%" == "x64" (set CPU_ARCH=64)
+  - IF IF /I "%PLATFORM%" == "x64" (echo "ARCCCCCCCCCCH 64BIT" && set CPU_ARCH=64)
+  - echo %CPU_ARCH%
   - set OPENSSL_DIR="C:\OpenSSL-Win%CPU_ARCH%"
   - set ICU_DIR_NAME=icu4c-54_1-Win%CPU_ARCH%-msvc10
   - set ICU_DOWNLOAD_URL="http://download.icu-project.org/files/icu4c/54.1/%ICU_DIR_NAME%.zip"
@@ -61,6 +62,7 @@ build_script:
   - 7z a QupZilla_%BUILD_ID%_bin.zip bin
 
 test_script:
+  - dir
   - cd tests/autotests
   - qmake CONFIG+=%CONFIGURATION% INCLUDEPATH+="%OPENSSL_DIR%\include" LIBS+=-L%OPENSSL_DIR%\lib
   - call %MAKETOOL%
@@ -118,7 +120,8 @@ after_build:
   - set OPENSSL_BIN_DIR="%OPENSSL_DIR%\bin"
   - set MSVC_REDIST_DIR="C:\Program Files (x86)\Microsoft Visual Studio "%VSVER%".0\VC\redist\%PLATFORM%\Microsoft.VC%VSVER%0.CRT"
   - set ICU_BIN_DIR="%QZ_BIN_DIR%\..\windows\wininstall\icu\bin"
-  - IF "%PLATFORM%" == "x64" (set ICU_BIN_DIR="%QZ_BIN_DIR%\..\windows\wininstall\icu\bin64")
+  - IF /I "%PLATFORM%" == "x64" (echo "ARCCCCCCCCCCH 64BIT" && set ICU_BIN_DIR="%QZ_BIN_DIR%\..\windows\wininstall\icu\bin64")
+  - echo %ICU_BIN_DIR%
   - set QT_BIN_DIR="%QTDIR%\bin"
   - set QT_PLUGINS_DIR="%QTDIR%\plugins"
   - set HUNSPELL_DIR="%QZ_BIN_DIR%\..\windows\wininstall\hunspell"
