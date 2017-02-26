@@ -49,7 +49,8 @@ install:
 
 build_script:
    - set
-   - IF /I "%PLATFORM%" == "x64" ( appveyor DownloadFile "http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip" ) else ( curl -fsS -o "KillProcDll&FindProcDll.zip" "http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip" )
+   - IF /I "%PLATFORM%" == "x64" ( appveyor DownloadFile "http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip" )
+   - IF /I "%PLATFORM%" == "x86" ( curl -fsS -o "KillProcDll&FindProcDll.zip" "http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip" )
    - dir
   # - dir %QTDIR%\bin\*.dll
   # - dir %TOOLSDIR%\
