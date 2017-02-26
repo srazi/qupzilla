@@ -140,7 +140,7 @@ artifacts:
 
 deploy:
     release: QupZilla-v$(appveyor_build_version)
-    description: 'QupZilla $(qz_ver) Windows Installer Released'  $(APPVEYOR_REPO_TAG_NAME)'
+    description: 'QupZilla $(qz_ver) Windows Installer Released $(appveyor_repo_tag_name)'
     provider: GitHub
     auth_token:
       secure: BumEo5ic9KIrhc8RxwsKFd/L6WwC0s5LpSef9uH+PtUKICZBZAcyqnPewKUqzEFi                              # your encrypted token from GitHub
