@@ -2,6 +2,8 @@ version: 2.1.99.{build}-{branch}
 
 cache:
   - windows/dependencies
+init:
+  - echo %platform%
 
 build:
   parallel: true
