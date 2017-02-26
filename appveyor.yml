@@ -146,7 +146,7 @@ deploy:
     provider: GitHub
     auth_token:
       secure: BumEo5ic9KIrhc8RxwsKFd/L6WwC0s5LpSef9uH+PtUKICZBZAcyqnPewKUqzEFi                              # your encrypted token from GitHub
-    artifact: /QupZilla.*\.exe/             # Archived bin directory
+    artifact: /QupZilla.*Installer.*\.exe/             # Archived bin directory
     draft: false
     prerelease: false
     on:
