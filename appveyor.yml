@@ -65,7 +65,8 @@ test_script:
   - call %CONFIGURATION%\autotests.exe
 
 
-after_build:
+# after_build:
+before_deploy:
   # prepare dependencies
   - echo [Paths] > %QZ_BIN_DIR%\qt.conf && echo Plugins="." >> %QZ_BIN_DIR%\qt.conf
   - copy  %QZ_BIN_DIR%\..\COPYRIGHT %QZ_BIN_DIR%\COPYRIGHT.txt
@@ -129,25 +130,26 @@ after_build:
   # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 artifacts:
-   - path: windows\QupZilla*.exe
-     name: QupZilla Installer (%PLATFORM%)
+   # - path: windows\QupZilla*.exe
+     # name: QupZilla Installer (%PLATFORM%)
    - path: bin\*.exe
      name: QupZilla Executable (%PLATFORM%)
    - path: bin\*.dll
      name: QupZilla DLL (%PLATFORM%)
 
-# deploy:
-    # release: QupZilla-v$(appveyor_build_version)
-    # description: 'AppVeyor Builds'
-    # provider: GitHub
-    # auth_token:
-      # secure:                               # your encrypted token from GitHub
-    # artifact: /QupZilla.*\.zip/             # Archived bin directory
-    # draft: false
-    # prerelease: false
-    # # on:
-      # # branch: master                      # release from master branch only
-      # # appveyor_repo_tag: true             # deploy on tag push only
+
+deploy:
+    release: QupZilla-v$(appveyor_build_version)
+    description: 'QupZilla $(qz_ver) Windows Installer Released' 
+    provider: GitHub
+    auth_token:
+      secure: BumEo5ic9KIrhc8RxwsKFd/L6WwC0s5LpSef9uH+PtUKICZBZAcyqnPewKUqzEFi                              # your encrypted token from GitHub
+    artifact: /windows.*QupZilla.*\.exe/             # Archived bin directory
+    draft: false
+    prerelease: false
+    on:
+      # branch: master                      # release from master branch only
+      appveyor_repo_tag: true             # deploy on tag push only
 
 # notifications:
   # - provider: Email
