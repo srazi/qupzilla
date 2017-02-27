@@ -77,7 +77,7 @@ before_deploy:
   - cd dependencies
   - IF NOT EXIST "%ICU_DIR_NAME%.zip" ( appveyor DownloadFile %ICU_DOWNLOAD_URL% ) else ( echo "Use cached %ICU_DIR_NAME%.zip")
   - IF NOT EXIST "KillProcDllFindProcDll.zip" (
-        appveyor DownloadFile "http://github.com/srazi/qupzilla/raw/NSIS-Plugins-for-installer/windows/dependencies/KillProcDllFindProcDll.zip" ) else ( echo "Use cached KillProcDllFindProcDll.zip")
+        appveyor DownloadFile "http://github.com/srazi/qupzilla/raw/d48ba6e3aa81258897914ab87ac81dfdb7dc620b/windows/dependencies/KillProcDllFindProcDll.zip")
   - IF NOT EXIST "Registry.zip" (
         appveyor DownloadFile "http://nsis.sourceforge.net/mediawiki/images/4/47/Registry.zip" ) else (echo "Use cached Registry.zip")
   - IF NOT EXIST "AppAssocReg-0.4.zip" (
