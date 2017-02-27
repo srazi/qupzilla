@@ -132,8 +132,8 @@ before_deploy:
   # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 artifacts:
-   # - path: windows\QupZilla*.exe
-     # name: QupZilla Installer (%PLATFORM%)
+   - path: windows\QupZilla*Installer*.exe
+     name: QupZilla Installer (%PLATFORM%)
    - path: bin\*.exe
      name: QupZilla Executable (%PLATFORM%)
    - path: bin\*.dll
@@ -141,8 +141,8 @@ artifacts:
 
 
 deploy:
-    release: QupZilla-v$(appveyor_build_version)
-    description: 'QupZilla $(qz_ver) Windows Installer Released $(appveyor_repo_tag_name)'
+    # release: QupZilla-v$(appveyor_build_version)
+    description: 'QupZilla $(qz_ver) Windows Installer Released'
     provider: GitHub
     auth_token:
       secure: BumEo5ic9KIrhc8RxwsKFd/L6WwC0s5LpSef9uH+PtUKICZBZAcyqnPewKUqzEFi                              # your encrypted token from GitHub
