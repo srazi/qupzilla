@@ -67,8 +67,8 @@ test_script:
   - call %CONFIGURATION%\autotests.exe
 
 
-# after_build:
-before_deploy:
+after_build:
+# before_deploy:
   # prepare dependencies
   - echo [Paths] > %QZ_DIR%\bin\qt.conf && echo Plugins="." >> %QZ_DIR%\bin\qt.conf
   - copy  %QZ_DIR%\COPYRIGHT %QZ_DIR%\bin\COPYRIGHT.txt
