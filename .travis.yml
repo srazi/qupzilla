@@ -29,7 +29,6 @@ install:
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
          if [[ "$QT" == "qt58" ]]; then
-              brew --cache;
               brew update;
               brew install openssl;
               brew install qt5;
