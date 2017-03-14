@@ -32,17 +32,12 @@ install:
               brew update;
               brew install openssl;
               brew install qt5;
-              # Add a key so we can login to travisci vm
               brew install netcat;
               cat ssh/travisci.pub >> ~/.ssh/authorized_keys;
               chmod 600 ssh/travisci;
-              # Enable remote SSH
-              # Forward ssh to a non privileged port (to avoid sharing of non privileged ports)
               netcat -L localhost:22 -p 2222 &;
               sleep 5;
-              # Check for open ports
               netstat -an|grep -i listen;
-              # Create reverse SSH tunner
               ssh -fn -v -N -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i ssh/travisci -R 2222:localhost:2222 ubuntu@@someremotehostonaws.eu-west-1.compute.amazonaws.com;
          fi
     fi
