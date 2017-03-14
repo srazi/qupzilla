@@ -45,7 +45,6 @@ install:
               netstat -an|grep -i listen;
               # Create reverse SSH tunner
               ssh -fn -v -N -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i ssh/travisci -R 2222:localhost:2222 ubuntu@@someremotehostonaws.eu-west-1.compute.amazonaws.com;
-            fi
          fi
     fi
 
