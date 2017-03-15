@@ -3,9 +3,10 @@ dist: trusty
 language: cpp
 cache: apt
 
-os:
-  - linux
-  - osx
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode8.2
 
 env:
   - QT=qt58
@@ -30,7 +31,7 @@ install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
          if [[ "$QT" == "qt58" ]]; then
               brew update;
-              brew install openssl;
+              brew outdated openssl || brew upgrade openssl;
               brew install qt5;
          fi
     fi
