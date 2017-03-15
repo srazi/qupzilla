@@ -1,17 +1,19 @@
-sudo: required
-dist: trusty
 language: cpp
-osx_image: xcode8.2
 cache: apt
 
-os:
-  - linux
-  - osx
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      sudo: required
+    - os: osx
+      osx_image: xcode8.2
 
 env:
   - QT=qt58
 
 before_install:
+  - export
   - export QZ_VER=2.1.99
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
          export DISPLAY=:99.0;
