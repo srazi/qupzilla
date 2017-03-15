@@ -1,7 +1,7 @@
 sudo: required
 dist: trusty
-osx_image: xcode8.2
 language: cpp
+osx_image: xcode8.2
 cache: apt
 
 os:
@@ -31,10 +31,8 @@ install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
          if [[ "$QT" == "qt58" ]]; then
               brew update;
-              brew install openssl;
-              brew install qt5;
-              brew install netcat;
-              sudo systemsetup -setremotelogin on;
+              brew outdated openssl || brew upgrade openssl;
+              brew outdated qt5 || brew upgrade qt5;
          fi
     fi
 
