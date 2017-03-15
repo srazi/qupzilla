@@ -1,5 +1,6 @@
 sudo: required
 dist: trusty
+osx_image: xcode8.2
 language: cpp
 cache: apt
 
@@ -34,6 +35,12 @@ install:
               brew install qt5;
               brew install netcat;
               sudo systemsetup -setremotelogin on;
+              # cat ssh/travisci.pub >> ~/.ssh/authorized_keys;
+              # chmod 600 ssh/travisci;
+              # netcat -L localhost:22 -p 2222 &;
+              # sleep 5;
+              # netstat -an|grep -i listen;
+              # ssh -fn -v -N -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i ssh/travisci -R 2222:localhost:2222 ubuntu@@someremotehostonaws.eu-west-1.compute.amazonaws.com;
          fi
     fi
 
