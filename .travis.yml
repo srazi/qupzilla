@@ -7,6 +7,9 @@ matrix:
   include:
     - os: osx
       osx_image: xcode8.2
+      cache:
+        directories:
+          - $HOME/Qt/
 # os:
   # # - linux
   # - osx
@@ -36,11 +39,13 @@ install:
          if [[ "$QT" == "qt58" ]]; then
               brew update;
               brew outdated openssl || brew upgrade openssl;
-              QT_INSTALLER_FILE_NAME=qt-opensource-mac-x64-clang-5.8.0;
-              wget "http://download.qt.io/official_releases/qt/5.8/5.8.0/$QT_INSTALLER_FILE_NAME.dmg";
-              hdiutil attach -noverify $QT_INSTALLER_FILE_NAME.dmg;
-              QT_INSTALLER=/Volumes/$QT_INSTALLER_FILE_NAME.dmg/$QT_INSTALLER_FILE_NAME.app/Contents/MacOS/$QT_INSTALLER_FILE_NAME;
-              $QT_INSTALLER --script mac/qt-mac-silent-install.qs;
+              if [ ! -d "$HOME/Qt" ]; then
+                  QT_INSTALLER_FILE_NAME=qt-opensource-mac-x64-clang-5.8.0;
+                  wget "http://download.qt.io/official_releases/qt/5.8/5.8.0/$QT_INSTALLER_FILE_NAME.dmg";
+                  hdiutil attach -noverify $QT_INSTALLER_FILE_NAME.dmg;
+                  QT_INSTALLER=/Volumes/$QT_INSTALLER_FILE_NAME/$QT_INSTALLER_FILE_NAME.app/Contents/MacOS/$QT_INSTALLER_FILE_NAME;
+                  $QT_INSTALLER --script mac/qt-mac-silent-install.qs;
+              fi
          fi
     fi
 
