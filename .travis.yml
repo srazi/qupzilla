@@ -33,7 +33,11 @@ install:
          if [[ "$QT" == "qt58" ]]; then
               brew update;
               brew outdated openssl || brew upgrade openssl;
-              brew outdated qt5 || brew upgrade qt5;
+              QT_INSTALLER_FILE_NAME=qt-opensource-mac-x64-clang-5.8.0;
+              wget "http://download.qt.io/official_releases/qt/5.8/5.8.0/$QT_INSTALLER_FILE_NAME.dmg";
+              hdiutil attach -noverify $QT_INSTALLER_FILE_NAME.dmg;
+              QT_INSTALLER=/Volumes/$QT_INSTALLER_FILE_NAME.dmg/$QT_INSTALLER_FILE_NAME.app/Contents/MacOS/$QT_INSTALLER_FILE_NAME;
+              $QT_INSTALLER --script mac/qt-mac-silent-install.qs;
          fi
     fi
 
@@ -48,11 +52,12 @@ script:
          MACDEPLOYQT="macdeployqt";
          CXXFLAGS="-Wextra -Werror -Wno-inconsistent-missing-override -Wno-deprecated-declarations";
          if [[ "$QT" == "qt58" ]]; then
-              export QTDIR=/usr/local/opt/qt5;
-              MACDEPLOYQT=/usr/local/opt/qt5/bin/macdeployqt;
-              QMAKE=/usr/local/opt/qt5/bin/qmake;
+              export QTDIR="~/Qt/5.8/clang_64";
+              MACDEPLOYQT=$QTDIR/bin/macdeployqt;
+              QMAKE=$QTDIR/bin/qmake;
          fi
     fi
+  - $QMAKE -v
   - $QMAKE QMAKE_CXXFLAGS+="$CXXFLAGS"
   - make || exit 1
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
