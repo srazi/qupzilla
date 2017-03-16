@@ -7,9 +7,9 @@ matrix:
   include:
     - os: osx
       osx_image: xcode8.2
-os:
-  # - linux
-  - osx
+# os:
+  # # - linux
+  # - osx
 
 env:
   - QT=qt58
