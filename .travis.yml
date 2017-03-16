@@ -62,7 +62,7 @@ script:
     fi
   - $QMAKE -v
   - $QMAKE QMAKE_CXXFLAGS+="$CXXFLAGS"
-  - make || exit 1
+  - make -j2 || exit 1
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
          cp -v bin/libQupZilla*.dylib tests/autotests;
     fi
