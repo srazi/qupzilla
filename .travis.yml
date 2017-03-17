@@ -27,6 +27,9 @@ before_install:
 
 install:
   - export QZ_DIR=$PWD
+  - echo $QZ_DIR
+  - find --help
+  - find -exit
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
          sudo apt-get -qq update;
          sudo apt-get -qq install libssl-dev pkg-config libxcb-util0-dev;
