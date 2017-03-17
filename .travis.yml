@@ -26,6 +26,7 @@ before_install:
     fi
 
 install:
+  - export QZ_DIR=$PWD
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
          sudo apt-get -qq update;
          sudo apt-get -qq install libssl-dev pkg-config libxcb-util0-dev;
@@ -44,18 +45,20 @@ install:
                   wget "http://download.qt.io/official_releases/qt/5.8/5.8.0/$QT_INSTALLER_FILE_NAME.dmg";
                   hdiutil attach -noverify $QT_INSTALLER_FILE_NAME.dmg;
                   QT_INSTALLER=/Volumes/$QT_INSTALLER_FILE_NAME/$QT_INSTALLER_FILE_NAME.app/Contents/MacOS/$QT_INSTALLER_FILE_NAME;
+                  echo "Silently installing Qt..."
                   $QT_INSTALLER --script mac/qt-mac-silent-install.qs;
-                  find $HOME/Qt -name '*.dSYM' -exec rm -r "{}" \;
-                  find $HOME/Qt -name '*_debug' -delete;
-                  rm -r $HOME/Qt/Docs;
-                  rm -r $HOME/Qt/Examples;
-                  du -h $HOME/Qt;
+                  cd $HOME/Qt;
+                  rm -r Docs;
+                  rm -r Examples;
+                  find ./ -name '*.dSYM' -exec rm -r "{}" \;
+                  find ./ -name '*_debug*' -delete;
+                  du -h;
+                  cd $QZ_DIR;
               fi
          fi
     fi
 
 script:
-  - export QZ_DIR=$PWD
   - QMAKE="qmake"
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
          CXXFLAGS="-Wextra -Werror";

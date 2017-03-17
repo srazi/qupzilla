@@ -28,6 +28,7 @@ Controller.prototype.ComponentSelectionPageCallback = function() {
     widget.deselectAll();
     widget.selectComponent("qt.58.clang_64");
     widget.selectComponent("qt.58.qtwebengine");
+    widget.selectComponent("qt.58.qtscript");
 
     gui.clickButton(buttons.NextButton);
 }
