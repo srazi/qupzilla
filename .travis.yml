@@ -28,10 +28,6 @@ before_install:
 install:
   - export QZ_DIR=$PWD
   - echo $QZ_DIR
-  - ls -l $HOME/
-  - ls -l $HOME/Qt/
-  - ls -l $HOME/Qt/5.8/clang_64/bin/
-  - find --help
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
          sudo apt-get -qq update;
          sudo apt-get -qq install libssl-dev pkg-config libxcb-util0-dev;
