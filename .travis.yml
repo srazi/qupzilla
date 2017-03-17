@@ -28,8 +28,6 @@ before_install:
 install:
   - export QZ_DIR=$PWD
   - echo $QZ_DIR
-  - find --help
-  - find -exit
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
          sudo apt-get -qq update;
          sudo apt-get -qq install libssl-dev pkg-config libxcb-util0-dev;
@@ -49,12 +47,12 @@ install:
                   hdiutil attach -noverify $QT_INSTALLER_FILE_NAME.dmg;
                   QT_INSTALLER=/Volumes/$QT_INSTALLER_FILE_NAME/$QT_INSTALLER_FILE_NAME.app/Contents/MacOS/$QT_INSTALLER_FILE_NAME;
                   echo "Silently installing Qt..."
-                  $QT_INSTALLER --script mac/qt-mac-silent-install.qs;
+                  $QT_INSTALLER --script $QZ_DIR/mac/qt-mac-silent-install.qs;
                   cd $HOME/Qt;
                   rm -r Docs;
                   rm -r Examples;
-                  find ./ -name '*.dSYM' -exec rm -r "{}" \;
-                  find ./ -name '*_debug*' -delete;
+                  find . -name '*.dSYM' -exec rm -r "{}" \;
+                  find . -name '*_debug*' -delete;
                   du -h;
                   cd $QZ_DIR;
               fi
