@@ -45,12 +45,11 @@ install:
                   hdiutil attach -noverify $QT_INSTALLER_FILE_NAME.dmg;
                   QT_INSTALLER=/Volumes/$QT_INSTALLER_FILE_NAME/$QT_INSTALLER_FILE_NAME.app/Contents/MacOS/$QT_INSTALLER_FILE_NAME;
                   $QT_INSTALLER --script mac/qt-mac-silent-install.qs;
-                  cd $HOME/Qt;
-                  find ./ -name '*.dSYM' -exec rm -r "{}" \;
-                  find ./ -name '*_debug' -delete;
-                  rm -r Docs;
-                  rm -r Examples;
-                  du -h;
+                  find $HOME/Qt -name '*.dSYM' -exec rm -r "{}" \;
+                  find $HOME/Qt -name '*_debug' -delete;
+                  rm -r $HOME/Qt/Docs;
+                  rm -r $HOME/Qt/Examples;
+                  du -h $HOME/Qt;
               fi
          fi
     fi
@@ -66,7 +65,7 @@ script:
          MACDEPLOYQT="macdeployqt";
          CXXFLAGS="-Wextra -Werror -Wno-inconsistent-missing-override -Wno-deprecated-declarations";
          if [[ "$QT" == "qt58" ]]; then
-              export QTDIR="~/Qt/5.8/clang_64";
+              export QTDIR="$HOME/Qt/5.8/clang_64";
               MACDEPLOYQT=$QTDIR/bin/macdeployqt;
               QMAKE=$QTDIR/bin/qmake;
          fi
