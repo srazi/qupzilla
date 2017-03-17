@@ -47,7 +47,7 @@ install:
                   wget "http://download.qt.io/official_releases/qt/5.8/5.8.0/$QT_INSTALLER_FILE_NAME.dmg";
                   hdiutil attach -noverify $QT_INSTALLER_FILE_NAME.dmg;
                   QT_INSTALLER=/Volumes/$QT_INSTALLER_FILE_NAME/$QT_INSTALLER_FILE_NAME.app/Contents/MacOS/$QT_INSTALLER_FILE_NAME;
-                  echo "Silently installing Qt..."
+                  echo "Silently installing Qt...";
                   $QT_INSTALLER --script $QZ_DIR/mac/qt-mac-silent-install.qs;
                   cd $HOME/Qt;
                   rm -rf Docs;
