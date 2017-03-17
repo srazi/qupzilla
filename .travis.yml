@@ -46,6 +46,7 @@ install:
               brew update;
               brew outdated openssl || brew upgrade openssl;
               if [ ! -f "$HOME/Qt/5.8/clang_64/bin/qmake" ]; then
+                  rm -rf $HOME/Qt;
                   QT_INSTALLER_FILE_NAME=qt-opensource-mac-x64-clang-5.8.0;
                   wget "http://download.qt.io/official_releases/qt/5.8/5.8.0/$QT_INSTALLER_FILE_NAME.dmg";
                   hdiutil attach -noverify $QT_INSTALLER_FILE_NAME.dmg;
@@ -53,8 +54,8 @@ install:
                   echo "Silently installing Qt..."
                   $QT_INSTALLER --script $QZ_DIR/mac/qt-mac-silent-install.qs;
                   cd $HOME/Qt;
-                  rm -r Docs;
-                  rm -r Examples;
+                  rm -rf Docs;
+                  rm -rf Examples;
                   find . -name '*.dSYM' -exec rm -r "{}" \;
                   find . -name '*_debug*' -delete;
                   du -h;
