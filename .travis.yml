@@ -45,6 +45,12 @@ install:
                   hdiutil attach -noverify $QT_INSTALLER_FILE_NAME.dmg;
                   QT_INSTALLER=/Volumes/$QT_INSTALLER_FILE_NAME/$QT_INSTALLER_FILE_NAME.app/Contents/MacOS/$QT_INSTALLER_FILE_NAME;
                   $QT_INSTALLER --script mac/qt-mac-silent-install.qs;
+                  cd $HOME/Qt;
+                  find ./ -name '*.dSYM' -exec rm -r "{}" \;
+                  find ./ -name '*_debug' -delete;
+                  rm -r Docs;
+                  rm -r Examples;
+                  du -h;
               fi
          fi
     fi
