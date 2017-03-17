@@ -39,7 +39,7 @@ install:
          if [[ "$QT" == "qt58" ]]; then
               brew update;
               brew outdated openssl || brew upgrade openssl;
-              if [ ! -d "$HOME/Qt" ]; then
+              if [ ! -f "$HOME/Qt/5.8/clang_64/bin/qmake" ]; then
                   QT_INSTALLER_FILE_NAME=qt-opensource-mac-x64-clang-5.8.0;
                   wget "http://download.qt.io/official_releases/qt/5.8/5.8.0/$QT_INSTALLER_FILE_NAME.dmg";
                   hdiutil attach -noverify $QT_INSTALLER_FILE_NAME.dmg;
