@@ -1,6 +1,7 @@
 QupZilla Web Browser
 ----------------------------------------------------------------------------------------
 
+
 [![Build Status](https://travis-ci.org/QupZilla/qupzilla.svg?branch=master)](https://travis-ci.org/QupZilla/qupzilla)  
 Homepage: https://www.qupzilla.com  
 Blog: http://blog.qupzilla.com  
