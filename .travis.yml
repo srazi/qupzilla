@@ -37,14 +37,21 @@ install:
 
          if [[ "$QT" == "qt58" ]]; then
               QT_VER=5.8;
-              export QTDIR="$HOME/Qt/$QT_VER/clang_64";
-              brew outdated openssl || brew upgrade openssl;
-              QT_INSTALLER_FILE_NAME=qt-opensource-mac-x64-clang-$QT_VER.0;
-              wget "http://download.qt.io/official_releases/qt/$QT_VER/$QT_VER.0/$QT_INSTALLER_FILE_NAME.dmg";
-              hdiutil attach -noverify $QT_INSTALLER_FILE_NAME.dmg;
-              QT_INSTALLER=/Volumes/$QT_INSTALLER_FILE_NAME/$QT_INSTALLER_FILE_NAME.app/Contents/MacOS/$QT_INSTALLER_FILE_NAME;
-              echo "Silently installing Qt...";
-              travis_wait $QT_INSTALLER --script $QZ_DIR/mac/qt-mac-silent-install.qs;
+              if [ -z "$TRAVIS_TAG" ]; then
+                  echo "Use brew to insall Qt...";
+                  brew install qt5;
+                  export QTDIR=/usr/local/opt/qt5;
+              else
+                  echo "Download and use official Qt mac installer...";
+                  export QTDIR="$HOME/Qt/$QT_VER/clang_64";
+                  brew outdated openssl || brew upgrade openssl;
+                  QT_INSTALLER_FILE_NAME=qt-opensource-mac-x64-clang-$QT_VER.0;
+                  wget "http://download.qt.io/official_releases/qt/$QT_VER/$QT_VER.0/$QT_INSTALLER_FILE_NAME.dmg";
+                  hdiutil attach -noverify $QT_INSTALLER_FILE_NAME.dmg;
+                  QT_INSTALLER=/Volumes/$QT_INSTALLER_FILE_NAME/$QT_INSTALLER_FILE_NAME.app/Contents/MacOS/$QT_INSTALLER_FILE_NAME;
+                  echo "Silently installing Qt...";
+                  travis_wait $QT_INSTALLER --script $QZ_DIR/mac/qt-mac-silent-install.qs;
+              fi
          fi
     fi
 
