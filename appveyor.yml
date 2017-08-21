@@ -23,13 +23,14 @@ environment:
     QZ_VER: 2.1.99
     VSVER: 14
     ARCH: x86
-    QMAKESPEC: win32-msvc2015
+    QMAKESPEC: win32-msvc
     MAKETOOL: jom
     TOOLSDIR: C:\Qt\Tools\QtCreator
 
   matrix:
-    - QTDIR: C:\Qt\5.8\msvc2015
     - QTDIR: C:\Qt\5.9\msvc2015
+    - QTDIR: C:\Qt\5.8\msvc2015
+      QMAKESPEC: win32-msvc2015
     - ARCH: x64
       QTDIR: C:\Qt\5.9\msvc2015_64
     - PORTABLE_BUILD: "true"
@@ -147,10 +148,10 @@ deploy:
     # on_build_failure: false
     # on_build_status_changed: true
 
-# remote desktop connection on init
-init:
-  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# # remote desktop connection on init
+# init:
+  # - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
-# remote desktop connection on finish and block build to not destroy VM
-on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# # remote desktop connection on finish and block build to not destroy VM
+# on_finish:
+  # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
