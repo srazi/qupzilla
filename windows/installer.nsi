@@ -322,16 +322,6 @@ SectionEnd
       Abort "$(MSG_InstallationCanceled)"
 
     notRunning:
-      ReadRegStr $INSTDIR ${PRODUCT_UNINST_ROOT_KEY}  "${PRODUCT_UNINST_KEY}" "InstallLocation"
-      IfErrors 0 +2
-        StrCpy $INSTDIR "$SMPROGRAMS\QupZilla"
-
-      MessageBox MB_OK|MB_ICONSTOP "$INSTDIR" 
-
-      IfFileExists "$INSTDIR\qupzilla.exe" +3
-        MessageBox MB_OK|MB_ICONSTOP "$(MSG_InvalidInstallPath)" 
-        Abort
-
       SetShellVarContext all
       Delete "$DESKTOP\QupZilla.lnk"
 
@@ -362,6 +352,7 @@ SectionEnd
       RMDir /r "$INSTDIR\printsupport"
       RMDir /r "$INSTDIR\qml"
       RMDir /r "$INSTDIR\resources"
+      RMDir /r "$INSTDIR\translations"
       RMDir /r "$INSTDIR\sqldrivers"
       RMDir /r "$INSTDIR\qtwebengine_dictionaries"
       RMDir /r "$INSTDIR\themes"
@@ -508,4 +499,17 @@ FunctionEnd
 
 Function RunQupZillaAsUser
     ${StdUtils.ExecShellAsUser} $0 "$INSTDIR\qupzilla.exe" "open" ""
+FunctionEnd
+
+Function un.onInit
+    ReadRegStr $INSTDIR ${PRODUCT_UNINST_ROOT_KEY}  "${PRODUCT_UNINST_KEY}" "InstallLocation"
+    IfErrors 0 +2
+        StrCpy $INSTDIR "$SMPROGRAMS\QupZilla"
+
+    MessageBox MB_OK|MB_ICONSTOP "$INSTDIR" 
+
+    IfFileExists "$INSTDIR\qupzilla.exe" found
+        MessageBox MB_OK|MB_ICONSTOP "$(MSG_InvalidInstallPath)" 
+        Abort
+    found:
 FunctionEnd
