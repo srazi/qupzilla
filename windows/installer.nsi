@@ -362,6 +362,9 @@ SectionEnd
       ; Remove $INSTDIR if it is empty
       RMDir "$INSTDIR"
 
+      ; Remove start menu programs folder
+      RMDir /r "$SMPROGRAMS\${PRODUCT_NAME}"
+
       DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
       DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
 
@@ -504,9 +507,7 @@ FunctionEnd
 Function un.onInit
     ReadRegStr $INSTDIR ${PRODUCT_UNINST_ROOT_KEY}  "${PRODUCT_UNINST_KEY}" "InstallLocation"
     IfErrors 0 +2
-        StrCpy $INSTDIR "$SMPROGRAMS\QupZilla"
-
-    MessageBox MB_OK|MB_ICONSTOP "$INSTDIR" 
+        StrCpy $INSTDIR "$PROGRAMFILES\${PRODUCT_NAME}"
 
     IfFileExists "$INSTDIR\qupzilla.exe" found
         MessageBox MB_OK|MB_ICONSTOP "$(MSG_InvalidInstallPath)" 
