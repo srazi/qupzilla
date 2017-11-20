@@ -507,7 +507,9 @@ FunctionEnd
 Function un.onInit
     ReadRegStr $INSTDIR ${PRODUCT_UNINST_ROOT_KEY}  "${PRODUCT_UNINST_KEY}" "InstallLocation"
     IfErrors 0 +2
-        StrCpy $INSTDIR ""
+        StrCpy $INSTDIR "$EXEDIR"
+
+    MessageBox MB_OK|MB_ICONSTOP "$INSTDIR" 
 
     IfFileExists "$INSTDIR\qupzilla.exe" found
         MessageBox MB_OK|MB_ICONSTOP "$(MSG_InvalidInstallPath)" 
