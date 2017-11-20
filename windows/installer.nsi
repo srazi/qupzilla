@@ -505,9 +505,11 @@ Function RunQupZillaAsUser
 FunctionEnd
 
 Function un.onInit
-    ReadRegStr $INSTDIR ${PRODUCT_UNINST_ROOT_KEY}  "${PRODUCT_UNINST_KEY}" "InstallLocation"
-    IfErrors 0 +2
-        StrCpy $INSTDIR "$EXEDIR"
+    MessageBox MB_OK|MB_ICONEXCLAMATION "$INSTDIR" 
+
+    ReadRegStr $R0 ${PRODUCT_UNINST_ROOT_KEY}  "${PRODUCT_UNINST_KEY}" "InstallLocation"
+    IfErrors +2 0
+        StrCpy $INSTDIR "$R0"
 
     MessageBox MB_OK|MB_ICONSTOP "$INSTDIR" 
 
