@@ -9,8 +9,8 @@ build:
   verbosity: detailed
 
 configuration:
-  - release
-#  - debug
+#  - release
+  - debug
 
 branches:
   except:
