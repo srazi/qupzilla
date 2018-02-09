@@ -53,5 +53,7 @@ int main(int argc, char *argv[])
     RUN_TEST(TabModelTest)
     RUN_TEST(WebTabTest)
 
+    QTest::qWait(500);
+
     return 0;
 }
